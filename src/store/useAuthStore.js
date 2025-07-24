@@ -3,7 +3,7 @@ import { create } from 'zustand';
 const useAuthStore = create((set) => ({
     isAdmin: localStorage.getItem('isAdmin') === 'true',
     login: (password) => {
-        if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
+        if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
             localStorage.setItem('isAdmin', 'true');
             set({ isAdmin: true });
             return true;

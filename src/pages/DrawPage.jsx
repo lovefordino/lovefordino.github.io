@@ -5,6 +5,7 @@ function DrawPage() {
     const {
         prizes,
         isLocked,
+        isClosed,
         loadFromFirebase,
         updatePrize,
         saveToFirebase
@@ -20,6 +21,7 @@ function DrawPage() {
     // 전체 남은 수량
     const totalRemaining = prizes.reduce((sum, p) => sum + p.remaining, 0);
     const isFinished = totalRemaining === 0;
+    const isUnavailable = isFinished || isClosed;
 
     const buildDrawPool = () => {
         const pool = [];
@@ -88,7 +90,7 @@ function DrawPage() {
         <div style={{ padding: '2rem' }}>
             <h1>럭키드로우</h1>
 
-            {isFinished ? (
+            {isUnavailable ? (
                 <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1rem' }}>
                     럭키드로우가 마감되었습니다.
                 </div>

@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-
+const docRef = doc(db, 'draw', 'settings');  
 const PRIZE_DOC = doc(db, 'settings', 'prizes');
 
 const useDrawStore = create((set, get) => ({
     prizes: [],
     displayMode: 'both',
     isLocked: false,
+    isClosed: false,
+    setClosed: (value) => set({ isClosed: value }),
 
     loadFromFirebase: async () => {
         const snap = await getDoc(PRIZE_DOC);
@@ -17,6 +19,7 @@ const useDrawStore = create((set, get) => ({
                 prizes: data.prizes || [],
                 displayMode: data.displayMode || 'both',
                 isLocked: data.isLocked || false,
+                isClosed: data.isClosed || false,
             });
         }
     },
@@ -35,8 +38,13 @@ const useDrawStore = create((set, get) => ({
     },
 
     saveToFirebase: async () => {
-        const { prizes, displayMode, isLocked } = get();
-        await setDoc(PRIZE_DOC, { prizes, displayMode, isLocked });
+        const { prizes, displayMode, isLocked, isClosed } = get(); // ← 여기에 포함!
+        await setDoc(docRef, {
+            prizes,
+            displayMode,
+            isLocked,
+            isClosed,
+        });
     },
 
     updatePrize: (index, updated) =>

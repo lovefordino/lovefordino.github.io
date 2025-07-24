@@ -6,11 +6,13 @@ function AdminPage() {
         prizes,
         displayMode,
         isLocked,
+        isClosed,
         addPrize,
         updatePrize,
         deletePrize,
         setDisplayMode,
         setLocked,
+        setClosed,
         saveToFirebase,
         loadFromFirebase,
         listenToFirebase,
@@ -119,6 +121,15 @@ function AdminPage() {
             <div style={{ marginTop: '1rem' }}>
                 <button onClick={saveToFirebase}>저장</button>
             </div>
+
+            <h2>🚪 럭키드로우 마감 설정</h2>
+            <p>
+                현재 상태: <strong>{isClosed ? '마감됨 🔒' : '열림 🔓'}</strong>
+            </p>
+            <button onClick={() => setClosed(!isClosed)}>
+                {isClosed ? '🔓 다시 열기' : '🔒 마감하기'}
+            </button>
+
         </div>
     );
 }
