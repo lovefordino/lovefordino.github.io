@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminPage from './pages/AdminPage';
 import DrawPage from './pages/DrawPage';
 import AdminLoginPage from './pages/AdminLoginPage';
@@ -8,16 +8,12 @@ function App() {
   const isAdmin = useAuthStore((s) => s.isAdmin);
 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<DrawPage />} />
-        <Route path="/admin-login" element={<AdminLoginPage />} />
-        <Route
-          path="/admin"
-          element={isAdmin ? <AdminPage /> : <Navigate to="/admin-login" replace />}
-        />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
