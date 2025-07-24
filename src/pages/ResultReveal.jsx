@@ -1,6 +1,7 @@
 // ResultReveal.jsx
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
+import useDrawStore from '../store/useDrawStore';
 
 function ResultReveal({ results, mode = 'all', onFinish }) {
     const [index, setIndex] = useState(0);
@@ -8,10 +9,18 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
     const [showConfetti, setShowConfetti] = useState(false);
     const [isRevealed, setIsRevealed] = useState(false);
 
+    const { displayMode } = useDrawStore();
+
     const isHighRank = (item) => item.rank === 1 || item.rank === 2;
 
-    // step 모드일 경우 개별 리스트 펼치기
-    const stepResults = mode === 'step' ? results.flatMap((r) => Array.from({ length: r.count }, () => ({ rank: r.rank, name: r.name }))) : results;
+    const shuffle = (arr) => {
+        return [...arr].sort(() => Math.random() - 0.5);
+    };
+
+    const stepResults = mode === 'step'
+        ? shuffle(results.flatMap((r) => Array.from({ length: r.count }, () => ({ rank: r.rank, name: r.name }))))
+        : results;
+
     const current = stepResults[index];
 
     useEffect(() => {
@@ -45,6 +54,12 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
         });
     };
 
+    const renderLabel = (item) => {
+        if (displayMode === 'rank') return `${item.rank}등`;
+        if (displayMode === 'prize') return `${item.name}`;
+        return `${item.rank}등 - ${item.name}`;
+    };
+
     return (
         <div className="result-reveal-wrapper" style={{ textAlign: 'center', padding: '2rem' }}>
             {showConfetti && <Confetti />}
@@ -60,7 +75,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                     <div>
                         {mode === 'step' ? (
                             <>
-                                <h2>{current.rank}등 - {current.name}</h2>
+                                <h2>{renderLabel(current)}</h2>
                                 {index < stepResults.length - 1 ? (
                                     <button onClick={handleNext}>다음</button>
                                 ) : (
@@ -72,7 +87,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                                 <h2>🎉 전체 당첨 결과 🎉</h2>
                                 <ul>
                                     {results.map((r, i) => (
-                                        <li key={i}>{r.rank}등 - {r.name} ({r.count}개)</li>
+                                        <li key={i}>{renderLabel(r)} ({r.count}개)</li>
                                     ))}
                                 </ul>
                                 <button onClick={onFinish}>확인 완료</button>
