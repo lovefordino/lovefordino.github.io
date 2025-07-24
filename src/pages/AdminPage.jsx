@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import useDrawStore from '../store/useDrawStore';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/useAuthStore';
 
 function AdminPage() {
     const {
@@ -17,6 +19,18 @@ function AdminPage() {
         loadFromFirebase,
         listenToFirebase,
     } = useDrawStore();
+
+    const isAdmin = useAuthStore((s) => s.isAdmin);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isAdmin) {
+            console.log('[Auth] 비로그인 상태 → /admin-login으로 이동');
+            navigate('/admin-login');
+        } else {
+            console.log('[Auth] 로그인됨');
+        }
+    }, [isAdmin]);
 
     useEffect(() => {
         loadFromFirebase();
