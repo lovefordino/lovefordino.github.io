@@ -131,7 +131,7 @@ function AdminPage() {
                     {isLocked ? '설정 해제' : '설정 잠금'}
                 </button>
             </div>
-            
+
             <button
                 onClick={async () => {
                     await saveToFirebase();
@@ -145,10 +145,15 @@ function AdminPage() {
             <p>
                 현재 상태: <strong>{isClosed ? '마감됨 🔒' : '열림 🔓'}</strong>
             </p>
-            <button onClick={() => setClosed(!isClosed)}>
+            <button
+                onClick={async () => {
+                    setClosed(!isClosed);
+                    await saveToFirebase();
+                    window.location.reload();
+                }}
+            >
                 {isClosed ? '🔓 다시 열기' : '🔒 마감하기'}
             </button>
-
         </div>
     );
 }
