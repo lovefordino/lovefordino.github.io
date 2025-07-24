@@ -91,7 +91,7 @@ function DrawPage() {
     };
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div className='container'>
             <h1>럭키드로우</h1>
 
             {showResult ? (
@@ -99,16 +99,16 @@ function DrawPage() {
             ) : (
                 <>
                     {isUnavailable ? (
-                        <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1rem' }}>
+                        <div>
                             럭키드로우가 마감되었습니다.
                         </div>
                     ) : (
                         <>
-                            <div style={{ marginBottom: '1rem' }}>
+                            <div>
                                 <strong>총 남은 수량: {totalRemaining}개</strong>
                             </div>
 
-                            <div style={{ marginBottom: '1rem' }}>
+                            <div>
                                 <label>뽑을 개수: </label>
                                 <input
                                     type="number"
@@ -119,7 +119,7 @@ function DrawPage() {
                                 />
                             </div>
 
-                            <div style={{ marginBottom: '1rem' }}>
+                            <div>
                                 <label>결과 보기 방식: </label>
                                 <select value={mode} onChange={(e) => setMode(e.target.value)}>
                                     <option value="all">한번에 보기</option>

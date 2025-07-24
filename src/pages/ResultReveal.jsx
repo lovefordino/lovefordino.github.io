@@ -61,12 +61,12 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
     };
 
     return (
-        <div className="result-reveal-wrapper" style={{ textAlign: 'center', padding: '2rem' }}>
+        <div className="result-reveal-wrapper">
             {showConfetti && <Confetti />}
 
             {isSuspense && !isRevealed ? (
                 <div>
-                    <h2 style={{ fontSize: '2rem', animation: 'pulse 1s infinite' }}>두근두근...!</h2>
+                    <h2>두근두근...!</h2>
                     <p>클릭하여 확인하세요</p>
                     <button onClick={handleReveal}>확인</button>
                 </div>
