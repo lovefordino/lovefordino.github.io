@@ -1,5 +1,7 @@
+// DrawPage.jsx
 import React, { useEffect, useState } from 'react';
 import useDrawStore from '../store/useDrawStore';
+import ResultReveal from './ResultReveal';
 
 function DrawPage() {
     const {
@@ -13,12 +15,13 @@ function DrawPage() {
 
     const [drawCount, setDrawCount] = useState(1);
     const [results, setResults] = useState([]);
+    const [mode, setMode] = useState('all'); // all or step
+    const [showResult, setShowResult] = useState(false);
 
     useEffect(() => {
         loadFromFirebase();
     }, []);
 
-    // 전체 남은 수량
     const totalRemaining = prizes.reduce((sum, p) => sum + p.remaining, 0);
     const isFinished = totalRemaining === 0;
     const isUnavailable = isFinished || isClosed;
@@ -64,19 +67,14 @@ function DrawPage() {
             const randomIndex = Math.floor(Math.random() * pool.length);
             const selectedRank = pool[randomIndex];
             drawnRanks.push(selectedRank);
-
-            // pool에서 해당 rank 하나 제거
             const firstIndex = pool.indexOf(selectedRank);
             pool.splice(firstIndex, 1);
-
-            // 상태에서도 해당 상품 수량 차감
             const target = updatedPrizes.find((p) => p.rank === selectedRank);
             if (target) {
                 target.remaining -= 1;
             }
         }
 
-        // 상태 반영
         updatedPrizes.forEach((p, index) => {
             updatePrize(index, { remaining: p.remaining });
         });
@@ -84,35 +82,56 @@ function DrawPage() {
 
         const grouped = groupResults(drawnRanks);
         setResults(grouped);
+        setShowResult(true);
+    };
+
+    const reset = () => {
+        setShowResult(false);
+        setResults([]);
     };
 
     return (
         <div style={{ padding: '2rem' }}>
             <h1>럭키드로우</h1>
 
-            {isUnavailable ? (
-                <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1rem' }}>
-                    럭키드로우가 마감되었습니다.
-                </div>
+            {showResult ? (
+                <ResultReveal results={results} mode={mode} onFinish={reset} />
             ) : (
                 <>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <strong>총 남은 수량: {totalRemaining}개</strong>
-                    </div>
+                    {isUnavailable ? (
+                        <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1rem' }}>
+                            럭키드로우가 마감되었습니다.
+                        </div>
+                    ) : (
+                        <>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <strong>총 남은 수량: {totalRemaining}개</strong>
+                            </div>
 
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label>뽑을 개수: </label>
-                        <input
-                            type="number"
-                            min="1"
-                            max="100"
-                            value={drawCount}
-                            onChange={(e) => setDrawCount(Number(e.target.value))}
-                        />
-                        <button onClick={draw} disabled={drawCount < 1}>
-                            추첨하기
-                        </button>
-                    </div>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label>뽑을 개수: </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="100"
+                                    value={drawCount}
+                                    onChange={(e) => setDrawCount(Number(e.target.value))}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label>결과 보기 방식: </label>
+                                <select value={mode} onChange={(e) => setMode(e.target.value)}>
+                                    <option value="all">한번에 보기</option>
+                                    <option value="step">하나씩 보기</option>
+                                </select>
+                            </div>
+
+                            <button onClick={draw} disabled={drawCount < 1}>
+                                추첨하기
+                            </button>
+                        </>
+                    )}
                 </>
             )}
         </div>

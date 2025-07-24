@@ -1,7 +1,16 @@
-import { create } from 'zustand';
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase/firebaseConfig';
-const docRef = doc(db, 'draw', 'settings');  
+import {
+    create
+} from 'zustand';
+import {
+    doc,
+    getDoc,
+    setDoc,
+    onSnapshot
+} from 'firebase/firestore';
+import {
+    db
+} from '../firebase/firebaseConfig';
+const docRef = doc(db, 'settings', 'prizes');
 const PRIZE_DOC = doc(db, 'settings', 'prizes');
 
 const useDrawStore = create((set, get) => ({
@@ -9,7 +18,9 @@ const useDrawStore = create((set, get) => ({
     displayMode: 'both',
     isLocked: false,
     isClosed: false,
-    setClosed: (value) => set({ isClosed: value }),
+    setClosed: (value) => set({
+        isClosed: value
+    }),
 
     loadFromFirebase: async () => {
         const snap = await getDoc(PRIZE_DOC);
@@ -30,15 +41,21 @@ const useDrawStore = create((set, get) => ({
                 const data = snap.data();
                 set({
                     prizes: data.prizes || [],
-                    displayMode: data.displayMode || 'both',
+                    displayMode: data.displayMode || 'both', // ✅ 이 줄이 꼭 있어야 함
                     isLocked: data.isLocked || false,
+                    isClosed: data.isClosed || false,
                 });
             }
         });
     },
 
     saveToFirebase: async () => {
-        const { prizes, displayMode, isLocked, isClosed } = get(); // ← 여기에 포함!
+        const {
+            prizes,
+            displayMode,
+            isLocked,
+            isClosed
+        } = get(); // ← 여기에 포함!
         await setDoc(docRef, {
             prizes,
             displayMode,
@@ -50,8 +67,13 @@ const useDrawStore = create((set, get) => ({
     updatePrize: (index, updated) =>
         set((state) => {
             const newPrizes = [...state.prizes];
-            newPrizes[index] = { ...newPrizes[index], ...updated };
-            return { prizes: newPrizes };
+            newPrizes[index] = {
+                ...newPrizes[index],
+                ...updated
+            };
+            return {
+                prizes: newPrizes
+            };
         }),
 
     addPrize: () =>
@@ -61,7 +83,12 @@ const useDrawStore = create((set, get) => ({
             return {
                 prizes: [
                     ...state.prizes,
-                    { rank: nextRank, name: '', quantity: 0, remaining: 0 },
+                    {
+                        rank: nextRank,
+                        name: '',
+                        quantity: 0,
+                        remaining: 0
+                    },
                 ],
             };
         }),
@@ -72,11 +99,17 @@ const useDrawStore = create((set, get) => ({
             updated.splice(index, 1);
             // 삭제 후 rank 재정렬
             updated.forEach((p, i) => (p.rank = i + 1));
-            return { prizes: updated };
+            return {
+                prizes: updated
+            };
         }),
 
-    setDisplayMode: (mode) => set({ displayMode: mode }),
-    setLocked: (locked) => set({ isLocked: locked }),
+    setDisplayMode: (mode) => set({
+        displayMode: mode
+    }),
+    setLocked: (locked) => set({
+        isLocked: locked
+    }),
 }));
 
 export default useDrawStore;

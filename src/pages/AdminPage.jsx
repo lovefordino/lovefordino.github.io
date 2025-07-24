@@ -131,10 +131,15 @@ function AdminPage() {
                     {isLocked ? '설정 해제' : '설정 잠금'}
                 </button>
             </div>
-
-            <div style={{ marginTop: '1rem' }}>
-                <button onClick={saveToFirebase}>저장</button>
-            </div>
+            
+            <button
+                onClick={async () => {
+                    await saveToFirebase();
+                    window.location.reload(); // ✅ 저장 후 새로고침
+                }}
+            >
+                저장
+            </button>
 
             <h2>🚪 럭키드로우 마감 설정</h2>
             <p>
