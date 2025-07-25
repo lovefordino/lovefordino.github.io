@@ -41,7 +41,7 @@ function AdminPage() {
     }, []);
 
     return (
-        <div>
+        <div className='admin'>
             <div className="admin-header">
                 <h1>관리자 페이지 <span>※ 상품 추가/삭제 및 결과 표시 방식 변경 후에는 ‘저장하기’를 눌러야 반영됩니다.</span></h1>
                 <div className="admin-status">
@@ -53,6 +53,7 @@ function AdminPage() {
                                 showCancelButton: true,
                                 confirmButtonText: isClosed ? '다시 열기' : '마감하기',
                                 cancelButtonText: '취소',
+                                confirmButtonColor: '#00c67e',
                             });
 
                             if (!result.isConfirmed) return;
@@ -63,6 +64,7 @@ function AdminPage() {
 
                             await Swal.fire({
                                 title: newClosed ? '마감되었습니다.' : '럭키드로우를 다시 열었습니다.',
+                                confirmButtonColor: '#00c67e',
                             });
 
                             window.location.reload();
@@ -119,10 +121,15 @@ function AdminPage() {
                                                 showCancelButton: true,
                                                 confirmButtonText: '삭제',
                                                 cancelButtonText: '취소',
+                                                confirmButtonColor: '#00c67e',
                                             });
                                             if (result.isConfirmed) {
                                                 deletePrize(index);
-                                                Swal.fire('삭제되었습니다.', '(반드시 저장버튼을 눌러주세요)');
+                                                Swal.fire({
+                                                    title: '삭제되었습니다.',
+                                                    text: '(반드시 저장버튼을 눌러주세요)',
+                                                    confirmButtonColor: '#00c67e',
+                                                });
                                             }
                                         }}
                                         disabled={isLocked}
@@ -184,11 +191,15 @@ function AdminPage() {
                             showCancelButton: true,
                             confirmButtonText: '저장',
                             cancelButtonText: '취소',
+                            confirmButtonColor: '#00c67e',
                         });
                         if (!result.isConfirmed) return;
 
                         await saveToFirebase();
-                        await Swal.fire('저장되었습니다!');
+                        await Swal.fire({
+                            title: '저장되었습니다!',
+                            confirmButtonColor: '#00c67e',
+                        });
                         window.location.reload();
                     }}
                 >

@@ -2,6 +2,13 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+:root {
+    --swal2-actions-margin: 0.5em auto 0;
+    --swal2-title-padding: 1.5125em 1em 0;
+    --swal2-padding: 0 0 1.75em;
+    --swal2-border-radius: 12px;
+    
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -99,17 +106,19 @@ body {
 input[type="text"],
 input[type="number"],
 input[type="range"],
+input[type="password"],
 select,
 textarea {
     appearance: none;
     -webkit-appearance: none;
     font-family: inherit;
-    font-size: 14px;
     color: #333;
     background: #fff;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 8px 12px;
+    font-size: 1em; /* 약 16px */
+    border-radius: 0.3125em; /* 5px */
+    padding: 0.625em 1.25em; /* 10px 20px */
+    min-width: 6em; /* 64px */
     outline: none;
     transition: border 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
@@ -117,6 +126,7 @@ textarea {
 }
 input[type="text"]:focus,
 input[type="number"]:focus,
+input[type="password"]:focus,
 select:focus,
 textarea:focus {
     border-color: #00e995;
@@ -200,11 +210,10 @@ button {
     -webkit-appearance: none;
     font-family: inherit;
     font-size: 1em; /* 약 16px */
-    font-weight: 500;
     border-radius: 0.3125em; /* 5px */
     padding: 0.625em 1.25em; /* 10px 20px */
     cursor: pointer;
-    min-width: 4em; /* 64px */
+    min-width: 5em; /* 64px */
     transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     line-height: 1.5;
 }

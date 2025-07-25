@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
+import Swal from 'sweetalert2';
 
 function AdminLoginPage() {
     const [pw, setPw] = useState('');
-    const [error, setError] = useState('');
     const login = useAuthStore((s) => s.login);
     const navigate = useNavigate();
 
@@ -14,23 +14,26 @@ function AdminLoginPage() {
         if (success) {
             navigate('/admin');
         } else {
-            setError('비밀번호가 틀렸습니다.');
+            Swal.fire({
+                title: 'Oops!',
+                text: '비밀번호가 틀렸습니다.',
+                confirmButtonColor: '#00c67e',
+            });
         }
     };
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div className='admin'>
             <h1>관리자 로그인</h1>
-            <form onSubmit={handleSubmit}>
+            <form className='admin-login' onSubmit={handleSubmit}>
                 <input
                     type="password"
                     placeholder="관리자 비밀번호 입력"
                     value={pw}
                     onChange={(e) => setPw(e.target.value)}
                 />
-                <button type="submit">확인</button>
+                <button className='btn-mint' type="submit">확인</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
 }

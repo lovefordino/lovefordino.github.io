@@ -1,10 +1,16 @@
-/* AdminPage.module.css */
-body {
+.admin {
     background-color: #eaeaea;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    flex-direction: column;
+}
+
+.admin-login {
+    display: flex;
+    gap: 5px;
+    margin-top: 1rem;
 }
 
 .admin-wrapper {
@@ -24,7 +30,7 @@ body {
     align-items: center;
 }
 
-.admin-header h1 {
+.admin h1 {
     font-size: 2rem;
 }
 
@@ -55,9 +61,17 @@ body {
 }
 
 .admin-table {
-    
     width: 80vw;
     margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    max-height: 55vh;
+    overflow-y: auto;
+   -ms-overflow-style: none;
+}
+
+.admin-table::-webkit-scrollbar{
+  display:none;
 }
 
 table {
@@ -69,8 +83,6 @@ table {
     width: 100%;
     margin: 0 auto;
     position: relative;
-    border-radius: 12px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 table * {
@@ -153,12 +165,13 @@ tbody tr:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1rem 0 2rem;
+    margin: 1rem auto 2rem;
+    width: 80vw;
 }
 
 /* 얼럿설정 */
 .swal2-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     line-height: 1.4;
     word-break: keep-all;
 }
