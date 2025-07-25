@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useDrawStore from '../store/useDrawStore';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import './css/admin.css';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Home } from 'lucide-react';
 import Swal from 'sweetalert2';
+import ShippingListModal from './ShippingListModal';
 
 function AdminPage() {
     const {
@@ -23,6 +24,7 @@ function AdminPage() {
         listenToFirebase,
     } = useDrawStore();
 
+    const [showModal, setShowModal] = useState(false);
     const isAdmin = useAuthStore((s) => s.isAdmin);
     const navigate = useNavigate();
 
@@ -50,8 +52,15 @@ function AdminPage() {
             <div className="admin-header">
                 <h1>관리자 페이지 <span>※ 상품 추가/삭제 및 결과 표시 방식 변경 후에는 ‘저장하기’를 눌러야 반영됩니다.</span></h1>
                 <div className="admin-status">
-                    <button className="btn-mint" onClick={() => navigate('/admin/shipping')} style={{ marginRight: 10 }}>
-                        배송 정보 확인
+                    <button
+                        className="btn-white btn-icon"
+                        style={{ marginRight: 10 }}
+                        onClick={() => navigate('/')}
+                    >
+                        <Home size={16} />
+                    </button>
+                    <button className="btn-mint" onClick={() => setShowModal(true)} style={{ marginRight: 10 }}>
+                        배송 정보 보기
                     </button>
                     <button className="btn-purple" onClick={handleLogout} style={{ marginRight: 10 }}>
                         로그아웃
@@ -226,6 +235,7 @@ function AdminPage() {
                     저장하기
                 </button>
             </div>
+            <ShippingListModal isOpen={showModal} onClose={() => setShowModal(false)} />
         </div>
     );
 }

@@ -91,7 +91,10 @@ function DrawPage() {
         }
 
         updatedPrizes.forEach((p, index) => {
-            updatePrize(index, { remaining: p.remaining });
+            updatePrize(index, {
+                ...prizes[index],       // 기존 prize 정보 복사
+                remaining: p.remaining  // 남은 수량만 덮어씀
+            });
         });
         saveToFirebase();
 

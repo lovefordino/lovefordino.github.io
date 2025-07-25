@@ -27,8 +27,8 @@ loadFromFirebase: async () => {
   if (snap.exists()) {
     const data = snap.data();
     const prizesWithDefaults = (data.prizes || []).map((p) => ({
-      requiresShipping: false, // ← 기본값으로 보정
       ...p,
+      requiresShipping: p.requiresShipping ?? false,  // ✅ 있는 값 유지, 없으면만 false
     }));
     set({
       prizes: prizesWithDefaults,
@@ -44,8 +44,8 @@ listenToFirebase: () => {
     if (snap.exists()) {
       const data = snap.data();
       const prizesWithDefaults = (data.prizes || []).map((p) => ({
-          requiresShipping: false,
         ...p,
+        requiresShipping: p.requiresShipping ?? false,  // ✅ 동일하게 적용
       }));
       set({
         prizes: prizesWithDefaults,

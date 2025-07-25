@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import DrawPage from './pages/DrawPage';
 import AdminPage from './pages/AdminPage';
 import AdminLoginPage from './pages/AdminLoginPage';
-import ShippingListAdmin from './pages/ShippingListAdmin';
 import RequireAdmin from './components/RequireAdmin';
 import useAuthStore from './store/useAuthStore';
 import './App.css'
@@ -27,14 +26,6 @@ function App() {
           }
         />
         <Route path="/admin-login" element={<AdminLoginPage />} />
-        <Route
-          path="/admin/shipping"
-          element={
-            <RequireAdmin>
-              <ShippingListAdmin />
-            </RequireAdmin>
-          }
-        />
       </Routes>
     </Router>
   );
