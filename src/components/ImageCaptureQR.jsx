@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import html2canvas from 'html2canvas';
 import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
-import { Camera, LoaderCircle  } from 'lucide-react';
+import { Camera, LoaderCircle } from 'lucide-react';
 
 function ImageCaptureQR() {
   const [qrUrl, setQrUrl] = useState(null);
@@ -10,6 +10,11 @@ function ImageCaptureQR() {
 
   const handleCaptureAndUpload = async () => {
     document.querySelectorAll('noscript').forEach(el => el.remove());
+    // fade-in 처리된 요소 스타일 강제 고정
+    document.querySelectorAll('.fade-in').forEach(el => {
+      el.style.opacity = '1';
+      el.style.animation = 'none';
+    });
     setLoading(true);
     try {
       // QR 버튼은 제외한 상태에서 캡처되도록 딜레이 줘도 됨
@@ -52,7 +57,7 @@ function ImageCaptureQR() {
         </>
       ) : (
         <button className="btn-capture" onClick={handleCaptureAndUpload} disabled={loading}>
-          {loading ? <LoaderCircle className='spinning'/> : <Camera color='#999'/>}
+          {loading ? <LoaderCircle className='spinning' /> : <Camera color='#999' />}
         </button>
       )}
     </div>

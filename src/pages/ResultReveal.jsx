@@ -91,7 +91,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                     <h2 className='draw-result'>전체 당첨 결과</h2>
                     <ul>
                         {sortedResults.map((r, i) => (
-                            <li key={i}>{renderLabel(r)} ({r.count}개)</li>
+                            <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
                         ))}
                     </ul>
                     <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
@@ -103,7 +103,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                         {mode === 'step' ? (
                             <>
                                 <ul>
-                                    <li>{renderLabel(current)}</li>
+                                    <li className='fade-in'>{renderLabel(current)}</li>
                                 </ul>
                                 <button className='btn-mint go-draw' onClick={handleNext}>
                                     {index < stepResults.length - 1 ? '다음' : '전체 결과 보기'}
@@ -115,7 +115,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                                 <h2>전체 당첨 결과</h2>
                                 <ul>
                                     {sortedResults.map((r, i) => (
-                                        <li key={i}>{renderLabel(r)} ({r.count}개)</li>
+                                        <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
                                     ))}
                                 </ul>
                                 <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>

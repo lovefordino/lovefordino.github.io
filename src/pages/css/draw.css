@@ -147,30 +147,33 @@
     margin-bottom: 1em;
     opacity: 0;
     position: relative;
+}
+
+.fade-in {
     animation: fadeInUp 1s;
     animation-fill-mode: forwards;
 }
 
-.draw-contents ul li:nth-child(1) {animation-delay: 0s;}
-.draw-contents ul li:nth-child(2) {animation-delay: 0.5s;}
-.draw-contents ul li:nth-child(3) {animation-delay: 1s;}
-.draw-contents ul li:nth-child(4) {animation-delay: 1.5s;}
-.draw-contents ul li:nth-child(5) {animation-delay: 2s;}
-.draw-contents ul li:nth-child(6) {animation-delay: 2.5s;}
-.draw-contents ul li:nth-child(7) {animation-delay: 3s;}
-.draw-contents ul li:nth-child(8) {animation-delay: 3.5s;}
-.draw-contents ul li:nth-child(9) {animation-delay: 4s;}
-.draw-contents ul li:nth-child(10) {animation-delay: 4.5s;}
-.draw-contents ul li:nth-child(11) {animation-delay: 5s;}
-.draw-contents ul li:nth-child(12) {animation-delay: 5.5s;}
-.draw-contents ul li:nth-child(13) {animation-delay: 6s;}
-.draw-contents ul li:nth-child(14) {animation-delay: 6.5s;}
-.draw-contents ul li:nth-child(15) {animation-delay: 7s;}
-.draw-contents ul li:nth-child(16) {animation-delay: 7.5s;}
-.draw-contents ul li:nth-child(17) {animation-delay: 8s;}
-.draw-contents ul li:nth-child(18) {animation-delay: 8.5s;}
-.draw-contents ul li:nth-child(19) {animation-delay: 9s;}
-.draw-contents ul li:nth-child(20) {animation-delay: 9.5s;}
+.fade-in:nth-child(1) {animation-delay: 0s;}
+.fade-in:nth-child(2) {animation-delay: 0.5s;}
+.fade-in:nth-child(3) {animation-delay: 1s;}
+.fade-in:nth-child(4) {animation-delay: 1.5s;}
+.fade-in:nth-child(5) {animation-delay: 2s;}
+.fade-in:nth-child(6) {animation-delay: 2.5s;}
+.fade-in:nth-child(7) {animation-delay: 3s;}
+.fade-in:nth-child(8) {animation-delay: 3.5s;}
+.fade-in:nth-child(9) {animation-delay: 4s;}
+.fade-in:nth-child(10) {animation-delay: 4.5s;}
+.fade-in:nth-child(11) {animation-delay: 5s;}
+.fade-in:nth-child(12) {animation-delay: 5.5s;}
+.fade-in:nth-child(13) {animation-delay: 6s;}
+.fade-in:nth-child(14) {animation-delay: 6.5s;}
+.fade-in:nth-child(15) {animation-delay: 7s;}
+.fade-in:nth-child(16) {animation-delay: 7.5s;}
+.fade-in:nth-child(17) {animation-delay: 8s;}
+.fade-in:nth-child(18) {animation-delay: 8.5s;}
+.fade-in:nth-child(19) {animation-delay: 9s;}
+.fade-in:nth-child(20) {animation-delay: 9.5s;}
 
 
 
