@@ -40,11 +40,21 @@ function AdminPage() {
         listenToFirebase();
     }, []);
 
+    const logout = useAuthStore((s) => s.logout);
+
+    const handleLogout = () => {
+        logout();           // Zustand 상태 초기화 및 localStorage 제거
+        navigate('/#/admin-login');      // 홈 또는 로그인 페이지로 이동
+    };
+
     return (
         <div className='admin'>
             <div className="admin-header">
                 <h1>관리자 페이지 <span>※ 상품 추가/삭제 및 결과 표시 방식 변경 후에는 ‘저장하기’를 눌러야 반영됩니다.</span></h1>
                 <div className="admin-status">
+                    <button className="btn-purple" onClick={handleLogout} style={{marginRight: 10}}>
+                        로그아웃
+                    </button>
                     <button
                         className='btn-red'
                         onClick={async () => {

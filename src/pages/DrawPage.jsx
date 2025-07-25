@@ -118,11 +118,6 @@ function DrawPage() {
             <h1>Lucky Draw</h1>
             <p>안내문구가 노출됩니다.</p>
             <div className='draw-wrapper'>
-                {!showResult && totalRemaining <= 50 && (
-                    <div className="remaining-warning">
-                        럭키 드로우가 {totalRemaining}개 남았습니다.
-                    </div>
-                )}
                 {isLoading ? (
                     <div></div>
                 ) : showResult ? (
@@ -135,6 +130,11 @@ function DrawPage() {
                             </div>
                         ) : (
                             <>
+                                {!showResult && totalRemaining <= 50 && (
+                                    <div className="remaining-warning">
+                                        럭키 드로우가 {totalRemaining}개 남았습니다.
+                                    </div>
+                                )}
                                 <div className='draw-row'>
                                     <div className="draw-count-control">
                                         <button
