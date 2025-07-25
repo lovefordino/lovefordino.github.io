@@ -1,22 +1,34 @@
+// src/pages/AdminLoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/useAuthStore';
+import { auth } from '../firebase/firebaseAuth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import Swal from 'sweetalert2';
 
 function AdminLoginPage() {
+    const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
-    const login = useAuthStore((s) => s.login);
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = login(pw);
-        if (success) {
-            navigate('/admin');
-        } else {
-            Swal.fire({
-                title: 'Oops!',
-                text: '비밀번호가 틀렸습니다.',
+        try {
+            const userCred = await signInWithEmailAndPassword(auth, email, pw);
+            const token = await userCred.user.getIdTokenResult();
+
+            if (token.claims.isAdmin) {
+                navigate('/admin');
+            } else {
+                await Swal.fire({
+                    title: '권한 없음',
+                    text: '관리자 권한이 없습니다.',
+                    confirmButtonColor: '#85d8ea',
+                });
+            }
+        } catch (err) {
+            await Swal.fire({
+                title: '로그인 실패',
+                text: err.message,
                 confirmButtonColor: '#85d8ea',
             });
         }
@@ -27,8 +39,14 @@ function AdminLoginPage() {
             <h1>관리자 로그인</h1>
             <form className='admin-login' onSubmit={handleSubmit}>
                 <input
+                    type="email"
+                    placeholder="이메일"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
                     type="password"
-                    placeholder="관리자 비밀번호 입력"
+                    placeholder="비밀번호"
                     value={pw}
                     onChange={(e) => setPw(e.target.value)}
                 />

@@ -91,6 +91,7 @@ input[type="text"],
 input[type="number"],
 input[type="range"],
 input[type="password"],
+input[type="email"],
 select,
 textarea {
     appearance: none;
@@ -111,6 +112,7 @@ textarea {
 .admin input[type="text"]:focus,
 .admin input[type="number"]:focus,
 .admin input[type="password"]:focus,
+.admin input[type="email"]:focus,
 .admin select:focus,
 .admin textarea:focus {
     border-color: #85d8ea;

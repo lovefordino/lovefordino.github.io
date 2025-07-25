@@ -22,32 +22,40 @@ const useDrawStore = create((set, get) => ({
         isClosed: value
     }),
 
-    loadFromFirebase: async () => {
-        const snap = await getDoc(PRIZE_DOC);
-        if (snap.exists()) {
-            const data = snap.data();
-            set({
-                prizes: data.prizes || [],
-                displayMode: data.displayMode || 'both',
-                isLocked: data.isLocked || false,
-                isClosed: data.isClosed || false,
-            });
-        }
-    },
+loadFromFirebase: async () => {
+  const snap = await getDoc(PRIZE_DOC);
+  if (snap.exists()) {
+    const data = snap.data();
+    const prizesWithDefaults = (data.prizes || []).map((p) => ({
+      requiresShipping: false, // ← 기본값으로 보정
+      ...p,
+    }));
+    set({
+      prizes: prizesWithDefaults,
+      displayMode: data.displayMode || 'both',
+      isLocked: data.isLocked || false,
+      isClosed: data.isClosed || false,
+    });
+  }
+},
 
-    listenToFirebase: () => {
-        onSnapshot(PRIZE_DOC, (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                set({
-                    prizes: data.prizes || [],
-                    displayMode: data.displayMode || 'both', // ✅ 이 줄이 꼭 있어야 함
-                    isLocked: data.isLocked || false,
-                    isClosed: data.isClosed || false,
-                });
-            }
-        });
-    },
+listenToFirebase: () => {
+  onSnapshot(PRIZE_DOC, (snap) => {
+    if (snap.exists()) {
+      const data = snap.data();
+      const prizesWithDefaults = (data.prizes || []).map((p) => ({
+          requiresShipping: false,
+        ...p,
+      }));
+      set({
+        prizes: prizesWithDefaults,
+        displayMode: data.displayMode || 'both',
+        isLocked: data.isLocked || false,
+        isClosed: data.isClosed || false,
+      });
+    }
+  });
+},
 
     saveToFirebase: async () => {
         const {
@@ -87,7 +95,8 @@ const useDrawStore = create((set, get) => ({
                         rank: nextRank,
                         name: '',
                         quantity: 0,
-                        remaining: 0
+                        remaining: 0,
+                        requiresShipping: false,
                     },
                 ],
             };
@@ -97,11 +106,8 @@ const useDrawStore = create((set, get) => ({
         set((state) => {
             const updated = [...state.prizes];
             updated.splice(index, 1);
-            // 삭제 후 rank 재정렬
             updated.forEach((p, i) => (p.rank = i + 1));
-            return {
-                prizes: updated
-            };
+            return { prizes: updated };
         }),
 
     setDisplayMode: (mode) => set({

@@ -52,7 +52,10 @@ function AdminPage() {
             <div className="admin-header">
                 <h1>관리자 페이지 <span>※ 상품 추가/삭제 및 결과 표시 방식 변경 후에는 ‘저장하기’를 눌러야 반영됩니다.</span></h1>
                 <div className="admin-status">
-                    <button className="btn-purple" onClick={handleLogout} style={{marginRight: 10}}>
+                    <button className="btn-mint" onClick={() => navigate('/admin/shipping')} style={{marginRight: 10}}>
+                        배송 정보 확인
+                    </button>
+                    <button className="btn-purple" onClick={handleLogout} style={{ marginRight: 10 }}>
                         로그아웃
                     </button>
                     <button
@@ -93,6 +96,7 @@ function AdminPage() {
                             <th>전체 수량</th>
                             <th>남은 수량</th>
                             <th>삭제</th>
+                            <th>배송 필요</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,6 +150,14 @@ function AdminPage() {
                                     >
                                         <Trash2 size={20} strokeWidth={1.5} />
                                     </button>
+                                </td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        checked={prize.requiresShipping || false}
+                                        disabled={isLocked}
+                                        onChange={(e) => updatePrize(index, { requiresShipping: e.target.checked })}
+                                    />
                                 </td>
                             </tr>
                         ))}

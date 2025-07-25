@@ -18,8 +18,9 @@
     justify-content: center;
 }
 
-.draw-wrapper {
-    min-width: 360px;
+.draw-wrapper,
+.shipping-form {
+    width: 360px;
     text-align: center;
     border-radius: 2em;
     padding: 2em;
@@ -111,6 +112,10 @@
     background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
 }
 
+.draw .go-draw + .go-draw {
+    margin-top: 1rem;
+}
+
 .draw .go-admin {
     text-decoration: none;
     color: #999999;
@@ -132,7 +137,7 @@
     flex-direction: column-reverse;
 }
 
-.draw-contents ul li {
+.draw-contents > div > ul > li {
     border-radius: 100px !important;
     text-align: center;
     /* width: 4rem !important; */
@@ -313,4 +318,42 @@ button.btn-capture:disabled {
     to {
         transform: rotate(360deg);
     }
+}
+
+.shipping-form input[type=text],
+.shipping-form textarea{
+    text-align: left;
+    /* width: 4rem !important; */
+    padding: 1rem !important;
+    border: 0 !important;
+    background-color: #f5f7f9 !important;
+    margin-bottom: 1rem;
+}
+.shipping-form input[type=text] {
+    height: 3rem!important;
+    border-radius: 100px !important;
+}
+.shipping-form textarea {
+    height: 6rem!important;
+    border-radius: 1.5em !important;
+    resize: none;
+}
+
+.shipping-form .shipping-prize-summary h4 {
+    color: #666666;
+}
+
+.shipping-form .shipping-prize-summary ul {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 3px;
+    margin: 0.5rem 0 1rem;
+}
+
+.shipping-btn-wrapper {
+    text-align: right;
+}
+
+.shipping-list-admin {
+    padding: 2rem;
 }

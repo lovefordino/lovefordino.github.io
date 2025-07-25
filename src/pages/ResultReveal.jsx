@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
+import ShippingFormModal from './ShippingFormModal';
 import ImageCaptureQR from '../components/ImageCaptureQR';
+import { useNavigate } from 'react-router-dom';
 
 function ResultReveal({ results, mode = 'all', onFinish }) {
     const [index, setIndex] = useState(0);
@@ -11,14 +13,21 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
     const [isRevealed, setIsRevealed] = useState(false);
     const [showFinalSummary, setShowFinalSummary] = useState(false);
 
-    const { displayMode } = useDrawStore();
+    const { displayMode, prizes } = useDrawStore(); // ✅ prizes 포함
+    const [showShippingModal, setShowShippingModal] = useState(false);
 
     const isHighRank = (item) => {
         if (!item) return false;
         return item.rank === 1 || item.rank === 2;
     };
 
-    const sortedResults = [...results].sort((a, b) => b.rank - a.rank);
+    const sortedResults = [...results].map((r) => {
+        const matched = prizes.find((p) => p.rank === r.rank && p.name === r.name);
+        return {
+            ...r,
+            requiresShipping: matched?.requiresShipping || false,
+        };
+    }).sort((a, b) => b.rank - a.rank);
 
     const stepResults = mode === 'step'
         ? sortedResults.flatMap((r) => Array.from({ length: r.count }, () => ({ rank: r.rank, name: r.name })))
@@ -76,11 +85,20 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
         return `${item.rank}등 - ${item.name}`;
     };
 
+    const navigate = useNavigate();
+
+    // 배송 정보 필요 여부 확인
+    const needsShipping = sortedResults.some(
+        (r) => r.requiresShipping === true
+    );
+
+    console.log('[디버그] sortedResults', sortedResults);
+
     return (
         <div className="draw-contents">
             {showConfetti && (
                 <Confetti
-                    className="no-capture" 
+                    className="no-capture"
                     numberOfPieces={80}
                     run={true}
                     gravity={0.3}
@@ -101,6 +119,11 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                             <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
                         ))}
                     </ul>
+                    {needsShipping && (
+                        <button className="btn-mint go-draw no-capture" onClick={() => setShowShippingModal(true)}>
+                            배송 정보 입력하기
+                        </button>
+                    )}
                     <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
                     {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
                 </div>
@@ -125,12 +148,23 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                                         <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
                                     ))}
                                 </ul>
+                                {needsShipping && (
+                                    <button className="btn-mint go-draw no-capture" onClick={() => setShowShippingModal(true)}>
+                                        배송 정보 입력하기
+                                    </button>
+                                )}
                                 <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
                                 {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
                             </>
                         )}
                     </div>
                 )
+            )}
+            {showShippingModal && (
+                <ShippingFormModal
+                    prizes={sortedResults}
+                    onClose={() => setShowShippingModal(false)}
+                />
             )}
         </div>
     );
