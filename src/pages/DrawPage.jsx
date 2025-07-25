@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import useDrawStore from '../store/useDrawStore';
 import ResultReveal from './ResultReveal';
+import './css/draw.css';
+import "react-dropdown/style.css";
+import { Plus, Minus } from 'lucide-react';
 
 function DrawPage() {
     const {
@@ -17,6 +20,7 @@ function DrawPage() {
     const [results, setResults] = useState([]);
     const [mode, setMode] = useState('all'); // all or step
     const [showResult, setShowResult] = useState(false);
+    const [finalMode, setFinalMode] = useState('all'); // ✅ 실제 전달할 mode
 
     useEffect(() => {
         loadFromFirebase();
@@ -82,6 +86,7 @@ function DrawPage() {
 
         const grouped = groupResults(drawnRanks);
         setResults(grouped);
+        setFinalMode(drawCount === 1 ? 'all' : mode); // ✅ 실제 mode 결정
         setShowResult(true);
     };
 
@@ -90,50 +95,73 @@ function DrawPage() {
         setResults([]);
     };
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        // 여기에서 관리자 상태 확인 (예: Firebase Auth, 로컬스토리지, 세션 등)
+        const adminLoggedIn = localStorage.getItem('isAdmin') === 'true';
+        setIsAdmin(adminLoggedIn);
+    }, []);
+
     return (
-        <div className='container'>
-            <h1>럭키드로우</h1>
-
-            {showResult ? (
-                <ResultReveal results={results} mode={mode} onFinish={reset} />
-            ) : (
-                <>
-                    {isUnavailable ? (
-                        <div>
-                            럭키드로우가 마감되었습니다.
-                        </div>
-                    ) : (
-                        <>
+        <div className='draw'>
+            <div className='draw-wrapper'>
+                {/* <h1>Lucky Draw</h1> */}
+                {showResult ? (
+                    <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
+                ) : (
+                    <div className='draw-contents'>
+                        {isUnavailable ? (
                             <div>
-                                <strong>총 남은 수량: {totalRemaining}개</strong>
+                                럭키드로우가 마감되었습니다.
                             </div>
+                        ) : (
+                            <>
+                                <div className='draw-row'>
+                                    <div className="draw-count-control">
+                                        <button
+                                            className='minus'
+                                            type="button"
+                                            onClick={() => setDrawCount((prev) => Math.max(1, prev - 1))}
+                                        ><Minus /></button>
 
-                            <div>
-                                <label>뽑을 개수: </label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    max="100"
-                                    value={drawCount}
-                                    onChange={(e) => setDrawCount(Number(e.target.value))}
-                                />
-                            </div>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max="100"
+                                            value={drawCount}
+                                            onChange={(e) => setDrawCount(Number(e.target.value))}
+                                        />
 
-                            <div>
-                                <label>결과 보기 방식: </label>
-                                <select value={mode} onChange={(e) => setMode(e.target.value)}>
-                                    <option value="all">한번에 보기</option>
-                                    <option value="step">하나씩 보기</option>
-                                </select>
-                            </div>
+                                        <button
+                                            className='plus'
+                                            type="button"
+                                            onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}
+                                        ><Plus /></button>
+                                    </div>
+                                </div>
 
-                            <button onClick={draw} disabled={drawCount < 1}>
-                                추첨하기
-                            </button>
-                        </>
-                    )}
-                </>
-            )}
+                                <div className='draw-row'>
+                                    <select value={mode} onChange={(e) => setMode(e.target.value)}>
+                                        <option value="all">한번에 보기</option>
+                                        <option value="step">하나씩 보기</option>
+                                    </select>
+                                </div>
+
+                                <button className='btn-mint go-draw' onClick={draw} disabled={drawCount < 1}>
+                                    Draw!
+                                </button>
+                                <a
+                                    href={isAdmin ? '/#/admin' : '/#/admin-login'}
+                                    className="go-admin"
+                                >
+                                    {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
+                                </a>
+                            </>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

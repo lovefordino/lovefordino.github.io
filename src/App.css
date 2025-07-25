@@ -56,36 +56,20 @@ table {
 /* reset css 끝 */
 
 /* webfont */
+
 @font-face {
-    font-family: 'NanumSquareNeoLight';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot);
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.ttf) format("truetype");
+    font-family: 'Paperlogy-4Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
 }
 
 @font-face {
-    font-family: 'NanumSquareNeo';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot);
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.ttf) format("truetype");
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
 }
-
-@font-face {
-    font-family: 'NanumSquareNeoBold';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot);
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.ttf) format("truetype");
-}
-
-@font-face {
-    font-family: 'NanumSquareNeoExtraBold';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot);
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.ttf) format("truetype");
-}
-
-@font-face {
-    font-family: 'NanumSquareNeoHeavy';
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot);
-    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.ttf) format("truetype");
-}
-
 /* 기본스타일 */
 
 * {
@@ -98,7 +82,7 @@ html {
 }
 
 body {
-  font-family: 'NanumSquareNeo';
+  font-family: 'Paperlogy-4Regular';
   overflow: hidden;
 }
 
@@ -124,13 +108,13 @@ textarea {
     width: 100%;
     box-sizing: border-box;
 }
-input[type="text"]:focus,
-input[type="number"]:focus,
-input[type="password"]:focus,
-select:focus,
-textarea:focus {
-    border-color: #00e995;
-    box-shadow: 0 0 0 2px rgba(0, 255, 163, 0.3);
+.admin input[type="text"]:focus,
+.admin input[type="number"]:focus,
+.admin input[type="password"]:focus,
+.admin select:focus,
+.admin textarea:focus {
+    border-color: #85d8ea;
+    box-shadow: 0 0 0 2px #85d8ea4d;
 }
 /* 체크박스 & 라디오 */
 input[type="checkbox"],
@@ -154,7 +138,7 @@ input[type="checkbox"]:checked::before {
     top: 0px;
     left: 3px;
     font-size: 12px;
-    color: #00e995;
+    color: #85d8ea;
 }
 input[type="radio"] {
     border-radius: 50%;
@@ -168,7 +152,7 @@ input[type="radio"]:checked::before {
     height: 8px;
     margin-left: -4px;
     margin-top: -4px;
-    background: #00e995;
+    background: #85d8ea;
     border-radius: 50%;
 }
 /* 슬라이더 (range) */
@@ -184,7 +168,7 @@ input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     width: 16px;
     height: 16px;
-    background: #00e995;
+    background: #85d8ea;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -194,10 +178,16 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    background: #00e995;
+    background: #85d8ea;
     border: none;
     border-radius: 50%;
     cursor: pointer;
+}
+
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
 }
 /* select 스타일 */
 select {
@@ -218,17 +208,32 @@ button {
     line-height: 1.5;
 }
 button.btn-mint {
-    color: #000;
-    background-color: #00ffa3;
-    border: 1px solid #00ffa3;
+    color: #ffffff;
+    background-color: #85d8ea;
+    border: 1px solid #85d8ea;
 }
 button.btn-mint:hover {
-    background-color: #00e291;
-    border-color: #00e291;
+    background-color: #6ccde8;
+    border-color: #6ccde8;
 }
 button.btn-mint:active {
-    background-color: #00c67e;
-    border-color: #00c67e;
+    background-color: #58c1e6;
+    border-color: #58c1e6;
+}
+
+/* 보라색 버튼 (새로 추가) */
+button.btn-purple {
+    color: #ffffff;
+    background-color: #aaa1f3;
+    border: 1px solid #aaa1f3;
+}
+button.btn-purple:hover {
+    background-color: #978bf1;
+    border-color: #978bf1;
+}
+button.btn-purple:active {
+    background-color: #8477ef;
+    border-color: #8477ef;
 }
 button.btn-white {
     color: #333;

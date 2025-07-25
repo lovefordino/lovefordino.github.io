@@ -1,0 +1,172 @@
+.draw {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    /* background: red; */
+    overflow: hidden;
+
+}
+
+.draw-contents {
+    display: flex;
+    flex-direction: column;
+    /* background-color: white; */
+    min-height: 200px;
+    justify-content: center;
+}
+
+.draw-wrapper {
+    min-width: 24vw;
+    text-align: center;
+    border-radius: 2.5em;
+    padding: 2em;
+}
+
+.draw h1 {
+    font-size: 3em;
+    font-family: 'Paperlogy-8ExtraBold';
+    margin: 1rem 0 0;
+}
+
+.draw p {
+    font-size: 1.2em;
+    margin: 1em 0 0;
+}
+
+.draw-row {
+    margin: 0 0 1em;
+}
+
+.draw-row label {
+    width: 120px;
+    text-align: left;
+}
+
+.draw-count-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.draw-count-control input {
+    border-radius: 0!important;
+    text-align: center;
+    /* width: 4rem !important; */
+    height: 3rem !important;
+    min-width: 4rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background-color: #f5f7f9!important;
+}
+
+.draw-count-control button {
+    width: 3rem !important;
+    height: 3rem !important;
+    min-width: 3rem !important;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f7f9;
+    border-color: #f5f7f9;
+    border: 0;
+}
+
+.draw-count-control .minus {
+    border-radius: 100px 0 0 100px;
+}
+
+.draw-count-control .plus {
+    border-radius: 0 100px 100px 0;
+}
+
+.draw-row select {
+    border-radius: 100px!important;
+    text-align: center;
+    /* width: 4rem !important; */
+    height: 3rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background-color: #f5f7f9!important;
+}
+
+.draw .go-draw {
+    border-radius: 100px!important;
+    text-align: center;
+    /* width: 4rem !important; */
+    height: 3rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    width: 100%;
+}
+
+.draw .go-admin {
+    text-decoration: none;
+    color: #999999;
+    margin-top: 1em;
+    display: block;
+}
+
+.draw-result {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+.draw-contents h2 + ul {
+    margin-top: 1rem;
+}
+
+.draw-contents ul li {
+    border-radius: 100px !important;
+    text-align: center;
+    /* width: 4rem !important; */
+    height: 3rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background-color: #f5f7f9 !important;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+@font-face {
+    font-family: 'Galmuri14';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2506-1@1.0/Galmuri14.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pluse {
+    font-family: 'Galmuri14';
+    font-size: 200px;
+    animation: pulse 1s infinite;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #85d8ea;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

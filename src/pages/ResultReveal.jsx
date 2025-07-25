@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
+import heart from '../img/heart.png';
 
 function ResultReveal({ results, mode = 'all', onFinish }) {
     const [index, setIndex] = useState(0);
@@ -76,44 +77,46 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
     };
 
     return (
-        <div className="result-reveal-wrapper" style={{ textAlign: 'center', padding: '2rem' }}>
+        <div className="draw-contents">
             {showConfetti && <Confetti />}
 
             {isSuspense && !isRevealed ? (
                 <div>
-                    <h2 style={{ fontSize: '2rem', animation: 'pulse 1s infinite' }}>두근두근...!</h2>
-                    <p>클릭하여 확인하세요</p>
-                    <button onClick={handleReveal}>확인</button>
+                    <div className='pluse' onClick={handleReveal}>
+                        ♥
+                    </div>
                 </div>
             ) : showFinalSummary ? (
                 <div>
-                    <h2>🎉 전체 당첨 결과 🎉</h2>
+                    <h2 className='draw-result'>전체 당첨 결과</h2>
                     <ul>
                         {sortedResults.map((r, i) => (
                             <li key={i}>{renderLabel(r)} ({r.count}개)</li>
                         ))}
                     </ul>
-                    <button onClick={onFinish}>확인 완료</button>
+                    <button className='btn-mint go-draw' onClick={onFinish}>확인 완료</button>
                 </div>
             ) : (
                 isRevealed && (
                     <div>
                         {mode === 'step' ? (
                             <>
-                                <h2>{renderLabel(current)}</h2>
-                                <button onClick={handleNext}>
+                                <ul>
+                                    <li>{renderLabel(current)}</li>
+                                </ul>
+                                <button className='btn-mint go-draw' onClick={handleNext}>
                                     {index < stepResults.length - 1 ? '다음' : '전체 결과 보기'}
                                 </button>
                             </>
                         ) : (
                             <>
-                                <h2>🎉 전체 당첨 결과 🎉</h2>
+                                <h2>전체 당첨 결과</h2>
                                 <ul>
                                     {sortedResults.map((r, i) => (
                                         <li key={i}>{renderLabel(r)} ({r.count}개)</li>
                                     ))}
                                 </ul>
-                                <button onClick={onFinish}>확인 완료</button>
+                                <button className='btn-mint go-draw' onClick={onFinish}>확인 완료</button>
                             </>
                         )}
                     </div>
