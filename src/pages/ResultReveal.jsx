@@ -77,17 +77,20 @@ function ResultReveal({ results, onFinish }) {
                         {results.map((r, i) => {
                             const isHigh = isHighRank(r);
                             const isRevealed = revealed.includes(i);
-
                             return (
-                                <li key={i} className="fade-in">
+                                <li
+                                    key={i}
+                                    className={`fade-in rank-${r.rank}`}
+                                    style={{ '--fade-index': i }}
+                                >
                                     {isHigh && !isRevealed ? (
                                         <div className="pulse" onClick={() => handleReveal(i)}>
                                             <span>♥</span>
                                         </div>
                                     ) : (
-                                        <>
+                                        <span className={isHigh ? 'reveal-text' : ''}>
                                             {renderLabel(r)}
-                                        </>
+                                        </span>
                                     )}
                                 </li>
                             );
@@ -95,7 +98,7 @@ function ResultReveal({ results, onFinish }) {
                     </ul>
 
 
-                    <button className="btn-mint go-draw" onClick={handleShowSummary} style={{width: 260}}>
+                    <button className="btn-mint go-draw" onClick={handleShowSummary} style={{ width: 260 }}>
                         전체 결과 보기
                     </button>
                 </div>

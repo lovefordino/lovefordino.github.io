@@ -122,17 +122,18 @@
     margin: 0 auto;
 }
 
-.draw .go-draw + .go-draw {
+.draw .go-draw+.go-draw {
     margin-top: 1rem;
 }
 
 .draw .go-admin {
     text-decoration: none;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
     margin-top: 1em;
     display: block;
 }
 
+.draw-contents h2,
 .draw-result {
     font-size: 1.2em;
     margin-bottom: 1em;
@@ -140,6 +141,8 @@
 
 .draw-contents h2+ul {
     margin-top: 1rem;
+    max-height: 230px;
+    overflow-y: auto;
 }
 
 .draw-contents ul {
@@ -152,11 +155,8 @@
     margin: 0 0 1rem;
 }
 
-.draw-contents .draw-result + ul {
-    flex-direction: column;
-}
 
-.draw-contents > div > ul > li {
+.draw-contents>div>ul>li {
     border-radius: 100px !important;
     text-align: center;
     /* width: 4rem !important; */
@@ -172,68 +172,78 @@
 }
 
 
-.draw-contents .draw-result + ul li {
-    width: 100%;
+
+.draw-contents .draw-result+ul {
+    display: block;
 }
 
+
+.draw-contents .draw-result+ul li {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.draw-contents .draw-result+ul li:last-child {
+    margin-bottom: 0;
+}
 
 .fade-in {
     opacity: 0;
-    animation: fadeInUp 1s;
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: calc(var(--fade-index, 0) * 0.5s);
     animation-fill-mode: forwards;
+    font-size: 1.1rem;
+    overflow: hidden;
 }
 
-.fade-in:nth-child(1) {animation-delay: 0s;}
-.fade-in:nth-child(2) {animation-delay: 0.5s;}
-.fade-in:nth-child(3) {animation-delay: 1s;}
-.fade-in:nth-child(4) {animation-delay: 1.5s;}
-.fade-in:nth-child(5) {animation-delay: 2s;}
-.fade-in:nth-child(6) {animation-delay: 2.5s;}
-.fade-in:nth-child(7) {animation-delay: 3s;}
-.fade-in:nth-child(8) {animation-delay: 3.5s;}
-.fade-in:nth-child(9) {animation-delay: 4s;}
-.fade-in:nth-child(10) {animation-delay: 4.5s;}
-.fade-in:nth-child(11) {animation-delay: 5s;}
-.fade-in:nth-child(12) {animation-delay: 5.5s;}
-.fade-in:nth-child(13) {animation-delay: 6s;}
-.fade-in:nth-child(14) {animation-delay: 6.5s;}
-.fade-in:nth-child(15) {animation-delay: 7s;}
-.fade-in:nth-child(16) {animation-delay: 7.5s;}
-.fade-in:nth-child(17) {animation-delay: 8s;}
-.fade-in:nth-child(18) {animation-delay: 8.5s;}
-.fade-in:nth-child(19) {animation-delay: 9s;}
-.fade-in:nth-child(20) {animation-delay: 9.5s;}
 
 .remaining-warning {
     margin-bottom: 2rem;
-  animation:fade 1000ms infinite;
-  -webkit-animation:fade 1000ms infinite;
+    animation: fade 1000ms infinite;
+    -webkit-animation: fade 1000ms infinite;
 }
 
 
 @keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.5; }
-    to { opacity: 1.0; }
-}                                                                                                                                                                                                                                  
+    from {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1.0;
+    }
+}
 
 @-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.5; }
-    to { opacity: 1.0; }
+    from {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1.0;
+    }
 }
 
 
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translate3d(0, 30%, 0);
-        }
-        to {
-            opacity: 1;
-            transform: translateZ(0);
-        }
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 30%, 0);
     }
+
+    to {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
 
 @font-face {
     font-family: 'Galmuri14';
@@ -260,10 +270,6 @@
 .pulse span {
     animation: pulseOpacity 1s infinite;
     color: #ffffff;
-    background: #85D8EA;
-    background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
-    color: transparent;
-    -webkit-background-clip: text;
 }
 
 .copy {
@@ -287,7 +293,7 @@
     right: 0;
     top: 8px; */
     border: 0;
-    background-color: transparent!important;
+    background-color: transparent !important;
     display: block;
     margin-top: 1rem;
     text-align: center;
@@ -347,7 +353,7 @@ button.btn-capture:disabled {
 }
 
 .shipping-form input[type=text],
-.shipping-form textarea{
+.shipping-form textarea {
     text-align: left;
     /* width: 4rem !important; */
     padding: 1rem !important;
@@ -355,12 +361,14 @@ button.btn-capture:disabled {
     background-color: #f5f7f9 !important;
     margin-bottom: 1rem;
 }
+
 .shipping-form input[type=text] {
-    height: 3rem!important;
+    height: 3rem !important;
     border-radius: 100px !important;
 }
+
 .shipping-form textarea {
-    height: 6rem!important;
+    height: 6rem !important;
     border-radius: 1.5em !important;
     resize: none;
 }
@@ -382,4 +390,31 @@ button.btn-capture:disabled {
 
 .shipping-list-admin {
     padding: 2rem;
+}
+
+
+
+/* 고등수 전용 강조 효과 */
+.rank-1,
+.rank-2 {
+    color: #fff;
+    background: #85D8EA;
+    background: linear-gradient(125deg, rgb(133, 216, 234) 0%, rgba(163, 153, 242, 1) 100%);
+    box-shadow: 0 0 0.5rem rgba(146, 188, 237, 0.502);
+}
+
+@keyframes revealTextLTR {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.reveal-text {
+    display: inline-block;
+    animation: revealTextLTR 0.8s ease-out forwards;
+
 }
