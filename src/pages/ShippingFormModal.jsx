@@ -76,7 +76,7 @@ function ShippingFormModal({ prizes = [], onClose }) {
   };
 
   return (
-    <div className="shipping-modal-overlay">
+    <div className="shipping-modal-overlay modal-root">
       <div className="shipping-modal">
         <h2>배송 정보 입력</h2>
         <form onSubmit={handleSubmit} className="shipping-form">

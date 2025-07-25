@@ -6,7 +6,6 @@ import './css/draw.css';
 import { Plus, Minus } from 'lucide-react';
 import { getAuth, onAuthStateChanged, getIdTokenResult } from 'firebase/auth';
 
-
 function DrawPage() {
     const {
         prizes,
@@ -18,6 +17,10 @@ function DrawPage() {
     } = useDrawStore();
 
     const [isLoading, setIsLoading] = useState(true);
+    const [drawCount, setDrawCount] = useState(1);
+    const [results, setResults] = useState([]);
+    const [showResult, setShowResult] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,14 +30,18 @@ function DrawPage() {
         fetchData();
     }, []);
 
-    const [drawCount, setDrawCount] = useState(1);
-    const [results, setResults] = useState([]);
-    const [mode, setMode] = useState('all'); // all or step
-    const [showResult, setShowResult] = useState(false);
-    const [finalMode, setFinalMode] = useState('all'); // ✅ 실제 전달할 mode
-
     useEffect(() => {
-        loadFromFirebase();
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const token = await getIdTokenResult(user);
+                setIsAdmin(token.claims.isAdmin === true);
+            } else {
+                setIsAdmin(false);
+            }
+        });
+
+        return () => unsubscribe();
     }, []);
 
     const totalRemaining = prizes.reduce((sum, p) => sum + p.remaining, 0);
@@ -52,20 +59,6 @@ function DrawPage() {
     };
 
     const getPrizeByRank = (rank) => prizes.find((p) => p.rank === rank);
-
-    const groupResults = (drawnRanks) => {
-        const grouped = {};
-        drawnRanks.forEach((rank) => {
-            const prize = getPrizeByRank(rank);
-            const key = `${rank}-${prize.name}`;
-            if (!grouped[key]) {
-                grouped[key] = { rank, name: prize.name, count: 1 };
-            } else {
-                grouped[key].count += 1;
-            }
-        });
-        return Object.values(grouped);
-    };
 
     const draw = () => {
         const pool = buildDrawPool();
@@ -92,15 +85,22 @@ function DrawPage() {
 
         updatedPrizes.forEach((p, index) => {
             updatePrize(index, {
-                ...prizes[index],       // 기존 prize 정보 복사
-                remaining: p.remaining  // 남은 수량만 덮어씀
+                ...prizes[index],
+                remaining: p.remaining
             });
         });
         saveToFirebase();
 
-        const grouped = groupResults(drawnRanks);
-        setResults(grouped);
-        setFinalMode(drawCount === 1 ? 'all' : mode); // ✅ 실제 mode 결정
+        const fullResults = drawnRanks.map(rank => {
+            const prize = getPrizeByRank(rank);
+            return {
+                rank,
+                name: prize.name,
+                requiresShipping: prize.requiresShipping || false
+            };
+        });
+
+        setResults(fullResults);
         setShowResult(true);
     };
 
@@ -108,23 +108,6 @@ function DrawPage() {
         setShowResult(false);
         setResults([]);
     };
-
-    const [isAdmin, setIsAdmin] = useState(false);
-
-
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const token = await getIdTokenResult(user);
-                setIsAdmin(token.claims.isAdmin === true);
-            } else {
-                setIsAdmin(false);
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
 
     return (
         <div className='draw'>
@@ -135,58 +118,26 @@ function DrawPage() {
                 {isLoading ? (
                     <div></div>
                 ) : showResult ? (
-                    <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
+                    <ResultReveal results={results} onFinish={reset} />
                 ) : (
                     <div className='draw-contents'>
                         {isUnavailable ? (
-                            <div>
-                                럭키드로우가 마감되었습니다.
-                            </div>
+                            <div>럭키드로우가 마감되었습니다.</div>
                         ) : (
                             <>
-                                {!showResult && totalRemaining <= 50 && (
+                                {totalRemaining <= 50 && (
                                     <div className="remaining-warning">
                                         럭키 드로우가 {totalRemaining}개 남았습니다.
                                     </div>
                                 )}
                                 <div className='draw-row'>
                                     <div className="draw-count-control">
-                                        <button
-                                            className='minus'
-                                            type="button"
-                                            onClick={() => setDrawCount((prev) => Math.max(1, prev - 1))}
-                                        ><Minus /></button>
-
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            max="100"
-                                            value={drawCount}
-                                            onChange={(e) => setDrawCount(Number(e.target.value))}
-                                        />
-
-                                        <button
-                                            className='plus'
-                                            type="button"
-                                            onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}
-                                        ><Plus /></button>
+                                        <button className='minus' onClick={() => setDrawCount((prev) => Math.max(1, prev - 1))}><Minus /></button>
+                                        <input type="number" min="1" max="100" value={drawCount} onChange={(e) => setDrawCount(Number(e.target.value))} />
+                                        <button className='plus' onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}><Plus /></button>
                                     </div>
                                 </div>
-
-                                {/* 보기 모드 사용시 */}
-
-                                {/* <div className='draw-row'>
-                                    <select value={mode} onChange={(e) => setMode(e.target.value)}>
-                                        <option value="all">한번에 보기</option>
-                                        <option value="step">하나씩 보기</option>
-                                    </select>
-                                </div> */}
-
-                                <button
-                                    className='btn-mint go-draw'
-                                    onClick={draw}
-                                    disabled={drawCount < 1 || !isAdmin}  // ✅ 관리자 아니면 비활성화
-                                >
+                                <button className='btn-mint go-draw' onClick={draw} disabled={!isAdmin} style={{width: 260}}>
                                     Draw!
                                 </button>
                             </>
@@ -194,11 +145,7 @@ function DrawPage() {
                     </div>
                 )}
             </div>
-
-            <a
-                href={isAdmin ? '/#/admin' : '/#/admin-login'}
-                className="go-admin no-capture"
-            >
+            <a href={isAdmin ? '/#/admin' : '/#/admin-login'} className="go-admin no-capture">
                 {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
             </a>
         </div>

@@ -1,83 +1,31 @@
-// ResultReveal.jsx
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
 import ShippingFormModal from './ShippingFormModal';
 import ImageCaptureQR from '../components/ImageCaptureQR';
-import { useNavigate } from 'react-router-dom';
 
-function ResultReveal({ results, mode = 'all', onFinish }) {
-    const [index, setIndex] = useState(0);
-    const [isSuspense, setIsSuspense] = useState(false);
+function ResultReveal({ results, onFinish }) {
+    const { displayMode } = useDrawStore();
+    const [revealed, setRevealed] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [showConfetti, setShowConfetti] = useState(false);
-    const [isRevealed, setIsRevealed] = useState(false);
-    const [showFinalSummary, setShowFinalSummary] = useState(false);
-
-    const { displayMode, prizes } = useDrawStore(); // ✅ prizes 포함
+    const [showSummary, setShowSummary] = useState(false);
     const [showShippingModal, setShowShippingModal] = useState(false);
 
-    const isHighRank = (item) => {
-        if (!item) return false;
-        return item.rank === 1 || item.rank === 2;
-    };
+    const isHighRank = (item) => item.rank === 1 || item.rank === 2;
 
-    const sortedResults = [...results].map((r) => {
-        const matched = prizes.find((p) => p.rank === r.rank && p.name === r.name);
-        return {
-            ...r,
-            requiresShipping: matched?.requiresShipping || false,
-        };
-    }).sort((a, b) => b.rank - a.rank);
-
-    const stepResults = mode === 'step'
-        ? sortedResults.flatMap((r) => Array.from({ length: r.count }, () => ({ rank: r.rank, name: r.name })))
-        : sortedResults;
-
-    const current = stepResults[index];
-
-    useEffect(() => {
-        if (mode === 'all') {
-            const hasHighRank = sortedResults.some((r) => isHighRank(r));
-            if (hasHighRank) {
-                setIsSuspense(true);
-            } else {
-                setIsRevealed(true);
-            }
+    // 전체 요약용 그룹화
+    const groupedResults = results.reduce((acc, item) => {
+        const key = `${item.rank}-${item.name}`;
+        if (!acc[key]) {
+            acc[key] = { ...item, count: 1 };
+        } else {
+            acc[key].count += 1;
         }
-    }, []);
-
-    useEffect(() => {
-        if (mode === 'step') {
-            const now = stepResults[index];
-            if (!now) return;
-            if (isHighRank(now)) {
-                setIsSuspense(true);
-            } else {
-                setIsSuspense(false);
-                setIsRevealed(true);
-            }
-        }
-    }, [index]);
-
-    const handleReveal = () => {
-        setIsSuspense(false);
-        setShowConfetti(true);
-        setTimeout(() => {
-            setIsRevealed(true);
-        }, 300);
-    };
-
-    const handleNext = () => {
-        setShowConfetti(false);
-        setIsRevealed(false);
-        setIndex((prev) => {
-            if (prev + 1 >= stepResults.length) {
-                setShowFinalSummary(true);
-                return prev;
-            }
-            return prev + 1;
-        });
-    };
+        return acc;
+    }, {});
+    const summary = Object.values(groupedResults);
+    const needsShipping = summary.some((r) => r.requiresShipping);
 
     const renderLabel = (item) => {
         if (displayMode === 'rank') return `${item.rank}등`;
@@ -85,84 +33,103 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
         return `${item.rank}등 - ${item.name}`;
     };
 
-    const navigate = useNavigate();
+    const handleReveal = (index) => {
+        const item = results[index];
 
-    // 배송 정보 필요 여부 확인
-    const needsShipping = sortedResults.some(
-        (r) => r.requiresShipping === true
-    );
+        if (isHighRank(item)) {
+            setShowConfetti(true); // ❗️ 끄지 않음!
+        }
 
-    console.log('[디버그] sortedResults', sortedResults);
+        setTimeout(() => {
+            setRevealed((prev) => [...prev, index]);
+        }, isHighRank(item) ? 500 : 0);
+    };
+
+    const handleShowSummary = () => {
+        setShowSummary(true);
+    };
+
+    useEffect(() => {
+        // 자동 reveal for 일반 등수
+        if (currentIndex < results.length) {
+            const item = results[currentIndex];
+            if (!isHighRank(item)) {
+                handleReveal(currentIndex);
+            }
+        }
+    }, [currentIndex]);
+
+    const handleFinish = () => {
+        setShowConfetti(false); // ✅ 이 시점에만 컨페티 끔
+        onFinish();             // 외부 종료 콜백 호출
+    };
 
     return (
         <div className="draw-contents">
             {showConfetti && (
-                <Confetti
-                    className="no-capture"
-                    numberOfPieces={80}
-                    run={true}
-                    gravity={0.3}
-                />
+                <Confetti className="no-capture" numberOfPieces={120} gravity={0.3} />
             )}
 
-            {isSuspense && !isRevealed ? (
+            {!showSummary ? (
                 <div>
-                    <div className='pluse' onClick={handleReveal}>
-                        <span>♥</span>
-                    </div>
-                </div>
-            ) : showFinalSummary ? (
-                <div>
-                    <h2 className='draw-result'>전체 당첨 결과</h2>
+                    <h2>당첨 결과</h2>
                     <ul>
-                        {sortedResults.map((r, i) => (
-                            <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
+                        {results.map((r, i) => {
+                            const isHigh = isHighRank(r);
+                            const isRevealed = revealed.includes(i);
+
+                            return (
+                                <li key={i} className="fade-in">
+                                    {isHigh && !isRevealed ? (
+                                        <div className="pulse" onClick={() => handleReveal(i)}>
+                                            <span>♥</span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {renderLabel(r)}
+                                        </>
+                                    )}
+                                </li>
+                            );
+                        })}
+                    </ul>
+
+
+                    <button className="btn-mint go-draw" onClick={handleShowSummary} style={{width: 260}}>
+                        전체 결과 보기
+                    </button>
+                </div>
+            ) : (
+                <div>
+                    <h2 className="draw-result">전체 당첨 결과</h2>
+                    <ul>
+                        {summary.map((r, i) => (
+                            <li key={i}>
+                                {renderLabel(r)} ({r.count}개)
+                            </li>
                         ))}
                     </ul>
+
                     {needsShipping && (
-                        <button className="btn-mint go-draw no-capture" onClick={() => setShowShippingModal(true)}>
+                        <button
+                            className="btn-mint go-draw no-capture"
+                            onClick={() => setShowShippingModal(true)}
+                        >
                             배송 정보 입력하기
                         </button>
                     )}
-                    <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
-                    {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
+
+                    <button className="btn-mint go-draw no-capture" onClick={handleFinish}>
+                        확인 완료
+                    </button>
+
+                    {results.some(isHighRank) && <ImageCaptureQR />}
                 </div>
-            ) : (
-                isRevealed && (
-                    <div>
-                        {mode === 'step' ? (
-                            <>
-                                <ul>
-                                    <li className='fade-in'>{renderLabel(current)}</li>
-                                </ul>
-                                <button className='btn-mint go-draw' onClick={handleNext}>
-                                    {index < stepResults.length - 1 ? '다음' : '전체 결과 보기'}
-                                </button>
-                                {isHighRank(current) && <ImageCaptureQR />}
-                            </>
-                        ) : (
-                            <>
-                                <h2>전체 당첨 결과</h2>
-                                <ul>
-                                    {sortedResults.map((r, i) => (
-                                        <li className='fade-in' key={i}>{renderLabel(r)} ({r.count}개)</li>
-                                    ))}
-                                </ul>
-                                {needsShipping && (
-                                    <button className="btn-mint go-draw no-capture" onClick={() => setShowShippingModal(true)}>
-                                        배송 정보 입력하기
-                                    </button>
-                                )}
-                                <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
-                                {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
-                            </>
-                        )}
-                    </div>
-                )
             )}
+
             {showShippingModal && (
                 <ShippingFormModal
-                    prizes={sortedResults}
+                    prizes={summary}
                     onClose={() => setShowShippingModal(false)}
                 />
             )}
