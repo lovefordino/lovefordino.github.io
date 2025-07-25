@@ -105,6 +105,7 @@ function DrawPage() {
 
     return (
         <div className='draw'>
+            <div className="copy">Copyright 2025. Dingdongsun. All rights reserved.</div>
             <h1>Lucky Draw</h1>
             <p>빛날 찬 : 찬란의 기록</p>
             <div className='draw-wrapper'>
