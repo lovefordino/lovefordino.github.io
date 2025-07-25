@@ -1,18 +1,61 @@
-import { create } from 'zustand';
+// src/store/useAuthStore.js
+import {
+    create
+} from 'zustand';
+import {
+    auth
+} from '../firebase/firebaseAuth';
+import {
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    getIdTokenResult,
+} from 'firebase/auth';
 
 const useAuthStore = create((set) => ({
-    isAdmin: localStorage.getItem('isAdmin') === 'true',
-    login: (password) => {
-        if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
-            localStorage.setItem('isAdmin', 'true');
-            set({ isAdmin: true });
-            return true;
+    user: null,
+    isAdmin: false,
+
+    login: async (email, password) => {
+        try {
+            const userCred = await signInWithEmailAndPassword(auth, email, password);
+            const token = await getIdTokenResult(userCred.user);
+            const isAdmin = token.claims.isAdmin === true;
+
+            set({
+                user: userCred.user,
+                isAdmin
+            });
+            return isAdmin;
+        } catch (e) {
+            return false;
         }
-        return false;
     },
-    logout: () => {
-        localStorage.removeItem('isAdmin');
-        set({ isAdmin: false });
+
+    logout: async () => {
+        await signOut(auth);
+        set({
+            user: null,
+            isAdmin: false
+        });
+    },
+
+    listenAuthState: () => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const tokenResult = await getIdTokenResult(user);
+                const isAdmin = tokenResult.claims.isAdmin === true;
+                set({
+                    user,
+                    isAdmin
+                });
+            } else {
+                set({
+                    user: null,
+                    isAdmin: false
+                });
+            }
+        });
     },
 }));
 

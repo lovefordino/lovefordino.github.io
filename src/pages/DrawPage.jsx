@@ -4,6 +4,8 @@ import useDrawStore from '../store/useDrawStore';
 import ResultReveal from './ResultReveal';
 import './css/draw.css';
 import { Plus, Minus } from 'lucide-react';
+import { getAuth, onAuthStateChanged, getIdTokenResult } from 'firebase/auth';
+
 
 function DrawPage() {
     const {
@@ -106,11 +108,20 @@ function DrawPage() {
 
     const [isAdmin, setIsAdmin] = useState(false);
 
-    useEffect(() => {
-        // 여기에서 관리자 상태 확인 (예: Firebase Auth, 로컬스토리지, 세션 등)
-        const adminLoggedIn = localStorage.getItem('isAdmin') === 'true';
-        setIsAdmin(adminLoggedIn);
-    }, []);
+
+useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const token = await getIdTokenResult(user);
+            setIsAdmin(token.claims.isAdmin === true);
+        } else {
+            setIsAdmin(false);
+        }
+    });
+
+    return () => unsubscribe();
+}, []);
 
     return (
         <div className='draw'>
@@ -168,20 +179,25 @@ function DrawPage() {
                                     </select>
                                 </div> */}
 
-                                <button className='btn-mint go-draw' onClick={draw} disabled={drawCount < 1}>
+                                <button
+                                    className='btn-mint go-draw'
+                                    onClick={draw}
+                                    disabled={drawCount < 1 || !isAdmin}  // ✅ 관리자 아니면 비활성화
+                                >
                                     Draw!
                                 </button>
+                            </>
+                        )}
+                    </div>
+                )}
+            </div>
+            
                                 <a
                                     href={isAdmin ? '/#/admin' : '/#/admin-login'}
                                     className="go-admin"
                                 >
                                     {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
                                 </a>
-                            </>
-                        )}
-                    </div>
-                )}
-            </div>
         </div>
     );
 }

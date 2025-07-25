@@ -1,8 +1,7 @@
 // src/pages/AdminLoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase/firebaseAuth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import useAuthStore from '../store/useAuthStore';
 import Swal from 'sweetalert2';
 
 function AdminLoginPage() {
@@ -10,29 +9,21 @@ function AdminLoginPage() {
     const [pw, setPw] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const userCred = await signInWithEmailAndPassword(auth, email, pw);
-            const token = await userCred.user.getIdTokenResult();
+    const login = useAuthStore((s) => s.login);
 
-            if (token.claims.isAdmin) {
-                navigate('/admin');
-            } else {
-                await Swal.fire({
-                    title: '권한 없음',
-                    text: '관리자 권한이 없습니다.',
-                    confirmButtonColor: '#85d8ea',
-                });
-            }
-        } catch (err) {
-            await Swal.fire({
-                title: '로그인 실패',
-                text: err.message,
-                confirmButtonColor: '#85d8ea',
-            });
-        }
-    };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await login(email, pw);
+    if (success) {
+        navigate('/admin');
+    } else {
+        await Swal.fire({
+            title: '접근 불가',
+            text: '로그인 실패 또는 관리자 권한 없음',
+            confirmButtonColor: '#85d8ea',
+        });
+    }
+};
 
     return (
         <div className='admin'>
@@ -50,7 +41,7 @@ function AdminLoginPage() {
                     value={pw}
                     onChange={(e) => setPw(e.target.value)}
                 />
-                <button className='btn-mint' type="submit">확인</button>
+                <button className='btn-mint' type="submit">로그인</button>
             </form>
         </div>
     );

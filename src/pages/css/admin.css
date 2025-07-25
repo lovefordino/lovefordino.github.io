@@ -11,6 +11,8 @@
     display: flex;
     gap: 5px;
     margin-top: 1rem;
+    flex-direction: column;
+    width: 320px;
 }
 
 .admin-wrapper {

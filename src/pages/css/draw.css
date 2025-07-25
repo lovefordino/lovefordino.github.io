@@ -110,6 +110,7 @@
     width: 100%;
     background: #85D8EA;
     background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
+    color: #ffffff;
 }
 
 .draw .go-draw + .go-draw {
@@ -118,7 +119,7 @@
 
 .draw .go-admin {
     text-decoration: none;
-    color: #999999;
+    color: rgba(255,255,255,0.5);
     margin-top: 1em;
     display: block;
 }
