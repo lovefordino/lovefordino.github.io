@@ -105,8 +105,8 @@ function DrawPage() {
 
     return (
         <div className='draw'>
+            <h1>Lucky Draw</h1>
             <div className='draw-wrapper'>
-                {/* <h1>Lucky Draw</h1> */}
                 {showResult ? (
                     <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
                 ) : (

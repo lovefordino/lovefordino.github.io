@@ -5,6 +5,7 @@
     justify-content: center;
     /* background: red; */
     overflow: hidden;
+    flex-direction: column;
 
 }
 
@@ -116,6 +117,11 @@
 
 .draw-contents h2 + ul {
     margin-top: 1rem;
+}
+
+.draw-contents ul {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .draw-contents ul li {
