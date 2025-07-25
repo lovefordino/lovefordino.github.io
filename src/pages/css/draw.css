@@ -166,12 +166,13 @@ background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 24
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #85d8ea;
-    background-color: #ffffff;
+    background: #85D8EA;
+    background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
 }
 
 .pluse span {
     animation: pulseOpacity 1s infinite;
+    color: #ffffff;
 }
 
 @keyframes pulse {
