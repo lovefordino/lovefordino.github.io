@@ -83,7 +83,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
             {isSuspense && !isRevealed ? (
                 <div>
                     <div className='pluse' onClick={handleReveal}>
-                        ♥
+                        <span>♥</span>
                     </div>
                 </div>
             ) : showFinalSummary ? (
