@@ -47,6 +47,9 @@ function AdminPage() {
         navigate('/#/admin-login');      // 홈 또는 로그인 페이지로 이동
     };
 
+    const totalQuantity = prizes.reduce((sum, p) => sum + (p.quantity || 0), 0);
+    const totalRemaining = prizes.reduce((sum, p) => sum + (p.remaining || 0), 0);
+
     return (
         <div className='admin'>
             <div className="admin-header">
@@ -175,6 +178,10 @@ function AdminPage() {
                 <button className='lock-prize btn-white' onClick={() => setLocked(!isLocked)}>
                     {isLocked ? '잠금해제' : '설정잠금'}
                 </button>
+                <div className="admin-summary">
+                    <strong>전체 수량:</strong> {totalQuantity}개 &nbsp;/&nbsp;
+                    <strong>남은 수량:</strong> {totalRemaining}개
+                </div>
                 <button className='add-prize btn-white' onClick={addPrize} disabled={isLocked || prizes.length >= 10}>
                     상품추가
                 </button>

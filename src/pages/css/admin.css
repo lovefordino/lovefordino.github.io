@@ -177,3 +177,8 @@ tbody tr:hover {
     line-height: 1.4;
     word-break: keep-all;
 }
+
+.admin-summary {
+    margin-left: auto;
+    margin-right: 1rem;
+}
