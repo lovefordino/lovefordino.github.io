@@ -18,7 +18,7 @@
 }
 
 .draw-wrapper {
-    min-width: 24vw;
+    min-width: 320px;
     text-align: center;
     border-radius: 2.5em;
     padding: 2em;

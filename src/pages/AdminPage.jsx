@@ -53,7 +53,7 @@ function AdminPage() {
                                 showCancelButton: true,
                                 confirmButtonText: isClosed ? '다시 열기' : '마감하기',
                                 cancelButtonText: '취소',
-                                confirmButtonColor: '#00c67e',
+                                confirmButtonColor: '#85d8ea',
                             });
 
                             if (!result.isConfirmed) return;
@@ -64,7 +64,7 @@ function AdminPage() {
 
                             await Swal.fire({
                                 title: newClosed ? '마감되었습니다.' : '럭키드로우를 다시 열었습니다.',
-                                confirmButtonColor: '#00c67e',
+                                confirmButtonColor: '#85d8ea',
                             });
 
                             window.location.reload();
@@ -121,14 +121,14 @@ function AdminPage() {
                                                 showCancelButton: true,
                                                 confirmButtonText: '삭제',
                                                 cancelButtonText: '취소',
-                                                confirmButtonColor: '#00c67e',
+                                                confirmButtonColor: '#85d8ea',
                                             });
                                             if (result.isConfirmed) {
                                                 deletePrize(index);
                                                 Swal.fire({
                                                     title: '삭제되었습니다.',
                                                     text: '(반드시 저장버튼을 눌러주세요)',
-                                                    confirmButtonColor: '#00c67e',
+                                                    confirmButtonColor: '#85d8ea',
                                                 });
                                             }
                                         }}
@@ -191,14 +191,14 @@ function AdminPage() {
                             showCancelButton: true,
                             confirmButtonText: '저장',
                             cancelButtonText: '취소',
-                            confirmButtonColor: '#00c67e',
+                            confirmButtonColor: '#85d8ea',
                         });
                         if (!result.isConfirmed) return;
 
                         await saveToFirebase();
                         await Swal.fire({
                             title: '저장되었습니다!',
-                            confirmButtonColor: '#00c67e',
+                            confirmButtonColor: '#85d8ea',
                         });
                         window.location.reload();
                     }}

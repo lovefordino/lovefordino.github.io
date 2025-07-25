@@ -17,7 +17,7 @@ function AdminLoginPage() {
             Swal.fire({
                 title: 'Oops!',
                 text: '비밀번호가 틀렸습니다.',
-                confirmButtonColor: '#00c67e',
+                confirmButtonColor: '#85d8ea',
             });
         }
     };
