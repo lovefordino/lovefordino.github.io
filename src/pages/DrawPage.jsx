@@ -106,6 +106,7 @@ function DrawPage() {
     return (
         <div className='draw'>
             <h1>Lucky Draw</h1>
+            <p>빛날 찬 : 찬란의 기록</p>
             <div className='draw-wrapper'>
                 {showResult ? (
                     <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
