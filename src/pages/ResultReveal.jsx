@@ -3,6 +3,8 @@ import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
 import ShippingFormModal from './ShippingFormModal';
 import ImageCaptureQR from '../components/ImageCaptureQR';
+import { useWindowSize } from '../hooks/useWindowSize';
+
 
 function ResultReveal({ results, onFinish }) {
     const { displayMode } = useDrawStore();
@@ -11,6 +13,7 @@ function ResultReveal({ results, onFinish }) {
     const [showConfetti, setShowConfetti] = useState(false);
     const [showSummary, setShowSummary] = useState(false);
     const [showShippingModal, setShowShippingModal] = useState(false);
+    const { width, height } = useWindowSize();
 
     const isHighRank = (item) => item.rank === 1 || item.rank === 2;
 
@@ -67,7 +70,13 @@ function ResultReveal({ results, onFinish }) {
     return (
         <div className="draw-contents">
             {showConfetti && (
-                <Confetti className="no-capture" numberOfPieces={120} gravity={0.3} />
+                <Confetti
+                    className="no-capture"
+                    width={width}
+                    height={height}
+                    numberOfPieces={120}
+                    gravity={0.3}
+                />
             )}
 
             {!showSummary ? (
