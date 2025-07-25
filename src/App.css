@@ -332,3 +332,15 @@ input[type="range"]:disabled::-moz-range-thumb {
     background: #ccc;
     cursor: not-allowed;
 }
+
+
+.app-capture {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  z-index: -1;
+}
+
+.app-capture .pulse {
+  display: none !important;
+}

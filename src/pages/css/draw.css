@@ -8,6 +8,7 @@
     flex-direction: column;
     background: #85D8EA;
     background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
+    padding: 2rem;
 }
 
 .draw-contents {
@@ -417,4 +418,11 @@ button.btn-capture:disabled {
     display: inline-block;
     animation: revealTextLTR 0.8s ease-out forwards;
 
+}
+
+.force-reveal {
+  font-size: 1.1rem;
+  color: #ffffff;
+  animation: none !important;
+  opacity: 1 !important;
 }

@@ -10,24 +10,33 @@ function ImageCaptureQR() {
 
   const handleCaptureAndUpload = async () => {
     document.querySelectorAll('noscript').forEach(el => el.remove());
+
     // fade-in 처리된 요소 스타일 강제 고정
     document.querySelectorAll('.fade-in').forEach(el => {
       el.style.opacity = '1';
       el.style.animation = 'none';
     });
+
+    // ✅ max-height 임시 제거
+    const targetUl = document.querySelector('.draw-contents h2 + ul');
+    let originalMaxHeight = null;
+    if (targetUl) {
+      originalMaxHeight = targetUl.style.maxHeight;
+      targetUl.style.maxHeight = 'none';
+    }
+
     setLoading(true);
     try {
-      // QR 버튼은 제외한 상태에서 캡처되도록 딜레이 줘도 됨
       const canvas = await html2canvas(document.body, {
         useCORS: true,
         ignoreElements: (element) => {
-          // 특정 요소는 무시 (예: QR 버튼)
           return element.classList.contains('no-capture');
         },
         windowWidth: 600,
         windowHeight: document.body.scrollHeight,
         scale: 2,
       });
+
       const dataUrl = canvas.toDataURL('image/png');
 
       const formData = new FormData();
@@ -44,6 +53,10 @@ function ImageCaptureQR() {
     } catch (error) {
       console.error('이미지 저장 실패:', error);
     } finally {
+      // ✅ 원상 복구
+      if (targetUl && originalMaxHeight !== null) {
+        targetUl.style.maxHeight = originalMaxHeight;
+      }
       setLoading(false);
     }
   };

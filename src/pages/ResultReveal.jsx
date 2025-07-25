@@ -90,6 +90,8 @@ function ResultReveal({ results, onFinish }) {
                                 <li
                                     key={i}
                                     className={`fade-in rank-${r.rank}`}
+                                    data-rank={r.rank}
+                                    data-label={renderLabel(r)}
                                     style={{ '--fade-index': i }}
                                 >
                                     {isHigh && !isRevealed ? (
@@ -105,11 +107,12 @@ function ResultReveal({ results, onFinish }) {
                             );
                         })}
                     </ul>
-
-
-                    <button className="btn-mint go-draw" onClick={handleShowSummary} style={{ width: 260 }}>
+                    <button className="btn-mint go-draw no-capture" onClick={handleShowSummary} style={{ width: 260 }}>
                         전체 결과 보기
                     </button>
+                    {results.some((r, i) => isHighRank(r)) && (
+                        <ImageCaptureQR revealedIndexes={revealed} results={results} />
+                    )}
                 </div>
             ) : (
                 <div>
@@ -134,8 +137,6 @@ function ResultReveal({ results, onFinish }) {
                     <button className="btn-mint go-draw no-capture" onClick={handleFinish}>
                         확인 완료
                     </button>
-
-                    {results.some(isHighRank) && <ImageCaptureQR />}
                 </div>
             )}
 

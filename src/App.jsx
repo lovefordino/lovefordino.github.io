@@ -15,6 +15,7 @@ function App() {
   }, []);
   return (
     <Router>
+      <div id="capture-area" style={{ position: 'absolute', left: '-9999px', top: 0 }} />
       <Routes>
         <Route path="/" element={<DrawPage />} />
         <Route
