@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
-import heart from '../img/heart.png';
+import ImageCaptureQR from '../components/ImageCaptureQR';
 
 function ResultReveal({ results, mode = 'all', onFinish }) {
     const [index, setIndex] = useState(0);
@@ -78,7 +78,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
 
     return (
         <div className="draw-contents">
-            {showConfetti && <Confetti />}
+            {showConfetti && <Confetti className='no-capture'/>}
 
             {isSuspense && !isRevealed ? (
                 <div>
@@ -94,7 +94,8 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                             <li key={i}>{renderLabel(r)} ({r.count}개)</li>
                         ))}
                     </ul>
-                    <button className='btn-mint go-draw' onClick={onFinish}>확인 완료</button>
+                    <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
+                    {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
                 </div>
             ) : (
                 isRevealed && (
@@ -107,6 +108,7 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                                 <button className='btn-mint go-draw' onClick={handleNext}>
                                     {index < stepResults.length - 1 ? '다음' : '전체 결과 보기'}
                                 </button>
+                                {isHighRank(current) && <ImageCaptureQR />}
                             </>
                         ) : (
                             <>
@@ -116,7 +118,8 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
                                         <li key={i}>{renderLabel(r)} ({r.count}개)</li>
                                     ))}
                                 </ul>
-                                <button className='btn-mint go-draw' onClick={onFinish}>확인 완료</button>
+                                <button className='btn-mint go-draw no-capture' onClick={onFinish}>확인 완료</button>
+                                {sortedResults.some((r) => isHighRank(r)) && <ImageCaptureQR />}
                             </>
                         )}
                     </div>

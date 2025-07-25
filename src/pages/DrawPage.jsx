@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import useDrawStore from '../store/useDrawStore';
 import ResultReveal from './ResultReveal';
 import './css/draw.css';
-import "react-dropdown/style.css";
 import { Plus, Minus } from 'lucide-react';
 
 function DrawPage() {
@@ -105,7 +104,7 @@ function DrawPage() {
 
     return (
         <div className='draw'>
-            <div className="copy">Copyright 2025. Dingdongsun. All rights reserved.</div>
+            <div className="copy no-capture">Copyright 2025. Dingdongsun. All rights reserved.</div>
             <h1>Lucky Draw</h1>
             <p>빛날 찬 : 찬란의 기록</p>
             <div className='draw-wrapper'>
@@ -143,12 +142,14 @@ function DrawPage() {
                                     </div>
                                 </div>
 
-                                <div className='draw-row'>
+                                {/* 보기 모드 사용시 */}
+
+                                {/* <div className='draw-row'>
                                     <select value={mode} onChange={(e) => setMode(e.target.value)}>
                                         <option value="all">한번에 보기</option>
                                         <option value="step">하나씩 보기</option>
                                     </select>
-                                </div>
+                                </div> */}
 
                                 <button className='btn-mint go-draw' onClick={draw} disabled={drawCount < 1}>
                                     Draw!

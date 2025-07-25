@@ -275,9 +275,9 @@ button.btn-red:active {
     border-color: #b71c1c;
 }
 button:disabled {
-    background-color: #ccc!important;
-    border-color: #ccc!important;
-    color: #666!important;
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #666;
     cursor: not-allowed;
     box-shadow: none;
     opacity: 0.7;

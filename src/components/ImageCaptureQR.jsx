@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+import html2canvas from 'html2canvas';
+import { QRCodeSVG } from 'qrcode.react';
+import axios from 'axios';
+import { Camera, LoaderCircle  } from 'lucide-react';
+
+function ImageCaptureQR() {
+  const [qrUrl, setQrUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleCaptureAndUpload = async () => {
+    document.querySelectorAll('noscript').forEach(el => el.remove());
+    setLoading(true);
+    try {
+      // QR 버튼은 제외한 상태에서 캡처되도록 딜레이 줘도 됨
+      const canvas = await html2canvas(document.body, {
+        useCORS: true,
+        ignoreElements: (element) => {
+          // 특정 요소는 무시 (예: QR 버튼)
+          return element.classList.contains('no-capture');
+        },
+        windowWidth: 600,
+        windowHeight: document.body.scrollHeight,
+        scale: 2,
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+
+      const formData = new FormData();
+      formData.append('image', dataUrl.split(',')[1]);
+
+      const res = await axios.post(
+        'https://api.imgbb.com/1/upload?key=bbdd8322ee8f1754bf689d44582b2ad7',
+        formData
+      );
+
+      if (res.data?.data?.url) {
+        setQrUrl(res.data.data.url);
+      }
+    } catch (error) {
+      console.error('이미지 저장 실패:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className='no-capture'>
+      {qrUrl ? (
+        <>
+          <p className='qr-desc'>스캔하여 저장된 이미지를 확인하세요</p>
+          <QRCodeSVG value={qrUrl} size={128} />
+        </>
+      ) : (
+        <button className="btn-capture" onClick={handleCaptureAndUpload} disabled={loading}>
+          {loading ? <LoaderCircle className='spinning'/> : <Camera color='#999'/>}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default ImageCaptureQR;
