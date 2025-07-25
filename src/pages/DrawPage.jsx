@@ -117,64 +117,70 @@ function DrawPage() {
             <div className="copy no-capture">Copyright 2025. Dingdongsun. All rights reserved.</div>
             <h1>Lucky Draw</h1>
             <p>안내문구가 노출됩니다.</p>
-            <div className='draw-wrapper'>{isLoading ? (
-                <div></div>
-            ) : showResult ? (
-                <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
-            ) : (
-                <div className='draw-contents'>
-                    {isUnavailable ? (
-                        <div>
-                            럭키드로우가 마감되었습니다.
-                        </div>
-                    ) : (
-                        <>
-                            <div className='draw-row'>
-                                <div className="draw-count-control">
-                                    <button
-                                        className='minus'
-                                        type="button"
-                                        onClick={() => setDrawCount((prev) => Math.max(1, prev - 1))}
-                                    ><Minus /></button>
-
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="100"
-                                        value={drawCount}
-                                        onChange={(e) => setDrawCount(Number(e.target.value))}
-                                    />
-
-                                    <button
-                                        className='plus'
-                                        type="button"
-                                        onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}
-                                    ><Plus /></button>
-                                </div>
+            <div className='draw-wrapper'>
+                {!showResult && totalRemaining <= 50 && (
+                    <div className="remaining-warning">
+                        럭키 드로우가 {totalRemaining}개 남았습니다.
+                    </div>
+                )}
+                {isLoading ? (
+                    <div></div>
+                ) : showResult ? (
+                    <ResultReveal results={results} mode={finalMode} onFinish={reset} />  // ✅ 변경됨
+                ) : (
+                    <div className='draw-contents'>
+                        {isUnavailable ? (
+                            <div>
+                                럭키드로우가 마감되었습니다.
                             </div>
+                        ) : (
+                            <>
+                                <div className='draw-row'>
+                                    <div className="draw-count-control">
+                                        <button
+                                            className='minus'
+                                            type="button"
+                                            onClick={() => setDrawCount((prev) => Math.max(1, prev - 1))}
+                                        ><Minus /></button>
 
-                            {/* 보기 모드 사용시 */}
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max="100"
+                                            value={drawCount}
+                                            onChange={(e) => setDrawCount(Number(e.target.value))}
+                                        />
 
-                            {/* <div className='draw-row'>
+                                        <button
+                                            className='plus'
+                                            type="button"
+                                            onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}
+                                        ><Plus /></button>
+                                    </div>
+                                </div>
+
+                                {/* 보기 모드 사용시 */}
+
+                                {/* <div className='draw-row'>
                                     <select value={mode} onChange={(e) => setMode(e.target.value)}>
                                         <option value="all">한번에 보기</option>
                                         <option value="step">하나씩 보기</option>
                                     </select>
                                 </div> */}
 
-                            <button className='btn-mint go-draw' onClick={draw} disabled={drawCount < 1}>
-                                Draw!
-                            </button>
-                            <a
-                                href={isAdmin ? '/#/admin' : '/#/admin-login'}
-                                className="go-admin"
-                            >
-                                {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
-                            </a>
-                        </>
-                    )}
-                </div>
-            )}
+                                <button className='btn-mint go-draw' onClick={draw} disabled={drawCount < 1}>
+                                    Draw!
+                                </button>
+                                <a
+                                    href={isAdmin ? '/#/admin' : '/#/admin-login'}
+                                    className="go-admin"
+                                >
+                                    {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
+                                </a>
+                            </>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
