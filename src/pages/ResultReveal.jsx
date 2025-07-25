@@ -78,7 +78,14 @@ function ResultReveal({ results, mode = 'all', onFinish }) {
 
     return (
         <div className="draw-contents">
-            {showConfetti && <Confetti className='no-capture'/>}
+            {showConfetti && (
+                <Confetti
+                    className="no-capture" 
+                    numberOfPieces={80}
+                    run={true}
+                    gravity={0.3}
+                />
+            )}
 
             {isSuspense && !isRevealed ? (
                 <div>
