@@ -109,19 +109,19 @@ function DrawPage() {
     const [isAdmin, setIsAdmin] = useState(false);
 
 
-useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const token = await getIdTokenResult(user);
-            setIsAdmin(token.claims.isAdmin === true);
-        } else {
-            setIsAdmin(false);
-        }
-    });
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const token = await getIdTokenResult(user);
+                setIsAdmin(token.claims.isAdmin === true);
+            } else {
+                setIsAdmin(false);
+            }
+        });
 
-    return () => unsubscribe();
-}, []);
+        return () => unsubscribe();
+    }, []);
 
     return (
         <div className='draw'>
@@ -191,13 +191,13 @@ useEffect(() => {
                     </div>
                 )}
             </div>
-            
-                                <a
-                                    href={isAdmin ? '/#/admin' : '/#/admin-login'}
-                                    className="go-admin"
-                                >
-                                    {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
-                                </a>
+
+            <a
+                href={isAdmin ? '/#/admin' : '/#/admin-login'}
+                className="go-admin no-capture"
+            >
+                {isAdmin ? '관리자 페이지로 이동' : '관리자로 로그인'}
+            </a>
         </div>
     );
 }
