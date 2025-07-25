@@ -57,15 +57,14 @@ function AdminPage() {
                 <div className="admin-status">
                     <button
                         className="btn-white btn-icon"
-                        style={{ marginRight: 10 }}
                         onClick={() => navigate('/')}
                     >
                         <Home size={16} />
                     </button>
-                    <button className="btn-mint" onClick={() => setShowModal(true)} style={{ marginRight: 10 }}>
+                    <button className="btn-mint" onClick={() => setShowModal(true)}>
                         배송 정보 보기
                     </button>
-                    <button className="btn-purple" onClick={handleLogout} style={{ marginRight: 10 }}>
+                    <button className="btn-purple" onClick={handleLogout}>
                         로그아웃
                     </button>
                     <button
@@ -178,13 +177,13 @@ function AdminPage() {
                 <button className='lock-prize btn-white' onClick={() => setLocked(!isLocked)}>
                     {isLocked ? '잠금해제' : '설정잠금'}
                 </button>
+                <button className='add-prize btn-white' onClick={addPrize} disabled={isLocked || prizes.length >= 10}>
+                    상품추가
+                </button>
                 <div className="admin-summary">
                     <strong>전체 수량:</strong> {totalQuantity}개 &nbsp;/&nbsp;
                     <strong>남은 수량:</strong> {totalRemaining}개
                 </div>
-                <button className='add-prize btn-white' onClick={addPrize} disabled={isLocked || prizes.length >= 10}>
-                    상품추가
-                </button>
             </div>
             <div className='admin-wrapper'>
                 <div className="admin-row">

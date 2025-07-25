@@ -45,6 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 1rem;
 }
 
 .admin-status p {
@@ -69,11 +70,11 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     max-height: 55vh;
     overflow-y: auto;
-   -ms-overflow-style: none;
+    -ms-overflow-style: none;
 }
 
-.admin-table::-webkit-scrollbar{
-  display:none;
+.admin-table::-webkit-scrollbar {
+    display: none;
 }
 
 table {
@@ -85,6 +86,7 @@ table {
     width: 100%;
     margin: 0 auto;
     position: relative;
+    min-width: 960px;
 }
 
 table * {
@@ -169,6 +171,8 @@ tbody tr:hover {
     justify-content: space-between;
     margin: 1rem auto 2rem;
     width: 80vw;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* 얼럿설정 */
@@ -181,4 +185,39 @@ tbody tr:hover {
 .admin-summary {
     margin-left: auto;
     margin-right: 1rem;
+}
+
+@media screen and (max-width: 1200px) {
+    .admin {
+        padding: 2rem;
+    }
+
+    .admin h1 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin h1 span {
+        margin-top: 0.5rem
+    }
+
+    ;
+
+}
+
+@media screen and (max-width: 960px) {
+    .admin-header {
+        flex-direction: column;
+    }
+
+    .admin h1,
+    .admin-status {
+        align-self: flex-start;
+    }
+
+    .admin-status {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
 }
