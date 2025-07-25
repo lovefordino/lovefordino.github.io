@@ -6,7 +6,8 @@
     /* background: red; */
     overflow: hidden;
     flex-direction: column;
-
+    background: #85D8EA;
+    background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
 }
 
 .draw-contents {
@@ -20,14 +21,18 @@
 .draw-wrapper {
     min-width: 360px;
     text-align: center;
-    border-radius: 2.5em;
+    border-radius: 2em;
     padding: 2em;
+    background-color: #ffffff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-top: 2rem;
 }
 
 .draw h1 {
     font-size: 3em;
     font-family: 'Paperlogy-8ExtraBold';
     margin: 1rem 0 0;
+    color: #ffffff;
 }
 
 .draw p {
@@ -101,6 +106,8 @@
     padding: 0 !important;
     border: 0 !important;
     width: 100%;
+    background: #85D8EA;
+background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
 }
 
 .draw .go-admin {
