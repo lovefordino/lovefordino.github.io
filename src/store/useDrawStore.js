@@ -10,7 +10,7 @@ import {
 import {
     db
 } from '../firebase/firebaseConfig';
-const docRef = doc(db, 'settings', 'prizes');
+
 const PRIZE_DOC = doc(db, 'settings', 'prizes');
 
 const useDrawStore = create((set, get) => ({
@@ -18,57 +18,83 @@ const useDrawStore = create((set, get) => ({
     displayMode: 'both',
     isLocked: false,
     isClosed: false,
+    noticeMessage: '', // ✅ 안내문구 상태 추가
+    themeColor: 'gradient1',
+
     setClosed: (value) => set({
         isClosed: value
     }),
+    setLocked: (locked) => set({
+        isLocked: locked
+    }),
+    setDisplayMode: (mode) => set({
+        displayMode: mode
+    }),
+    setNoticeMessage: (msg) => set({
+        noticeMessage: msg
+    }), // ✅ 안내문구 setter 추가
+    setThemeColor: (colorName) => set({
+        themeColor: colorName
+    }),
 
-loadFromFirebase: async () => {
-  const snap = await getDoc(PRIZE_DOC);
-  if (snap.exists()) {
-    const data = snap.data();
-    const prizesWithDefaults = (data.prizes || []).map((p) => ({
-      ...p,
-      requiresShipping: p.requiresShipping ?? false,  // ✅ 있는 값 유지, 없으면만 false
-    }));
-    set({
-      prizes: prizesWithDefaults,
-      displayMode: data.displayMode || 'both',
-      isLocked: data.isLocked || false,
-      isClosed: data.isClosed || false,
-    });
-  }
-},
+    loadFromFirebase: async () => {
+        const snap = await getDoc(PRIZE_DOC);
+        if (snap.exists()) {
+            const data = snap.data();
+            const prizesWithDefaults = (data.prizes || []).map((p) => ({
+                ...p,
+                requiresShipping: p.requiresShipping ?? false, // ✅ 오류 수정 (??)
+            }));
 
-listenToFirebase: () => {
-  onSnapshot(PRIZE_DOC, (snap) => {
-    if (snap.exists()) {
-      const data = snap.data();
-      const prizesWithDefaults = (data.prizes || []).map((p) => ({
-        ...p,
-        requiresShipping: p.requiresShipping ?? false,  // ✅ 동일하게 적용
-      }));
-      set({
-        prizes: prizesWithDefaults,
-        displayMode: data.displayMode || 'both',
-        isLocked: data.isLocked || false,
-        isClosed: data.isClosed || false,
-      });
-    }
-  });
-},
+            set({
+                prizes: prizesWithDefaults,
+                displayMode: data.displayMode || 'both',
+                isLocked: data.isLocked || false,
+                isClosed: data.isClosed || false,
+                noticeMessage: data.noticeMessage || '', // ✅ 안내문구 로드
+                themeColor: data.themeColor || 'gradient1',
+            });
+        }
+    },
+
+    listenToFirebase: () => {
+        onSnapshot(PRIZE_DOC, (snap) => {
+            if (snap.exists()) {
+                const data = snap.data();
+                const prizesWithDefaults = (data.prizes || []).map((p) => ({
+                    ...p,
+                    requiresShipping: p.requiresShipping ?? false, // ✅ 오류 수정 (??)
+                }));
+
+                set({
+                    prizes: prizesWithDefaults,
+                    displayMode: data.displayMode || 'both',
+                    isLocked: data.isLocked || false,
+                    isClosed: data.isClosed || false,
+                    noticeMessage: data.noticeMessage || '', // ✅ 안내문구 실시간 반영
+                    themeColor: data.themeColor || 'gradient1',
+                });
+            }
+        });
+    },
 
     saveToFirebase: async () => {
         const {
             prizes,
             displayMode,
             isLocked,
-            isClosed
-        } = get(); // ← 여기에 포함!
-        await setDoc(docRef, {
+            isClosed,
+            noticeMessage, // ✅ 안내문구 포함
+            themeColor
+        } = get();
+
+        await setDoc(PRIZE_DOC, {
             prizes,
             displayMode,
             isLocked,
             isClosed,
+            noticeMessage, // ✅ Firestore에 저장
+            themeColor
         });
     },
 
@@ -77,7 +103,7 @@ listenToFirebase: () => {
             const newPrizes = [...state.prizes];
             newPrizes[index] = {
                 ...newPrizes[index],
-                ...updated
+                ...updated,
             };
             return {
                 prizes: newPrizes
@@ -107,15 +133,10 @@ listenToFirebase: () => {
             const updated = [...state.prizes];
             updated.splice(index, 1);
             updated.forEach((p, i) => (p.rank = i + 1));
-            return { prizes: updated };
+            return {
+                prizes: updated
+            };
         }),
-
-    setDisplayMode: (mode) => set({
-        displayMode: mode
-    }),
-    setLocked: (locked) => set({
-        isLocked: locked
-    }),
 }));
 
 export default useDrawStore;

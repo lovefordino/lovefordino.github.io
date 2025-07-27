@@ -3,17 +3,15 @@ import Confetti from 'react-confetti';
 import useDrawStore from '../store/useDrawStore';
 import ShippingFormModal from './ShippingFormModal';
 import ImageCaptureQR from '../components/ImageCaptureQR';
-import { useWindowSize } from '../hooks/useWindowSize';
 
 
 function ResultReveal({ results, onFinish }) {
-    const { displayMode } = useDrawStore();
+    const { displayMode,themeColor  } = useDrawStore();
     const [revealed, setRevealed] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [showConfetti, setShowConfetti] = useState(false);
     const [showSummary, setShowSummary] = useState(false);
     const [showShippingModal, setShowShippingModal] = useState(false);
-    const { width, height } = useWindowSize();
 
     const isHighRank = (item) => item.rank === 1 || item.rank === 2;
 
@@ -27,7 +25,7 @@ function ResultReveal({ results, onFinish }) {
         }
         return acc;
     }, {});
-    const summary = Object.values(groupedResults);
+    const summary = Object.values(groupedResults).sort((a, b) => a.rank - b.rank);
     const needsShipping = summary.some((r) => r.requiresShipping);
 
     const renderLabel = (item) => {
@@ -71,9 +69,7 @@ function ResultReveal({ results, onFinish }) {
         <div className="draw-contents">
             {showConfetti && (
                 <Confetti
-                    className="no-capture"
-                    width={width}
-                    height={height}
+                    className="no-capture confetti-canvas"
                     numberOfPieces={120}
                     gravity={0.3}
                 />
@@ -89,7 +85,7 @@ function ResultReveal({ results, onFinish }) {
                             return (
                                 <li
                                     key={i}
-                                    className={`fade-in rank-${r.rank}`}
+                                    className={`fade-in rank-${r.rank} ${isHigh ? themeColor : ''}`}
                                     data-rank={r.rank}
                                     data-label={renderLabel(r)}
                                     style={{ '--fade-index': i }}
@@ -107,10 +103,10 @@ function ResultReveal({ results, onFinish }) {
                             );
                         })}
                     </ul>
-                    <button className="btn-mint go-draw no-capture" onClick={handleShowSummary} style={{ width: 260 }}>
+                    <button className={`go-draw no-capture ${themeColor}`} onClick={handleShowSummary} style={{ width: 260 }}>
                         전체 결과 보기
                     </button>
-                    {results.some((r, i) => isHighRank(r)) && (
+                    {results.some((r, i) => isHighRank(r) && revealed.includes(i)) && (
                         <ImageCaptureQR revealedIndexes={revealed} results={results} />
                     )}
                 </div>
@@ -127,14 +123,14 @@ function ResultReveal({ results, onFinish }) {
 
                     {needsShipping && (
                         <button
-                            className="btn-mint go-draw no-capture"
+                            className={`go-draw no-capture ${themeColor}`}
                             onClick={() => setShowShippingModal(true)}
                         >
                             배송 정보 입력하기
                         </button>
                     )}
 
-                    <button className="btn-mint go-draw no-capture" onClick={handleFinish}>
+                    <button className={`go-draw no-capture ${themeColor}`} onClick={handleFinish}>
                         확인 완료
                     </button>
                 </div>

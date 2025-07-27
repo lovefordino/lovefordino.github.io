@@ -14,6 +14,8 @@ function DrawPage() {
         loadFromFirebase,
         updatePrize,
         saveToFirebase,
+        noticeMessage,
+        themeColor  
     } = useDrawStore();
 
     const [isLoading, setIsLoading] = useState(true);
@@ -110,10 +112,10 @@ function DrawPage() {
     };
 
     return (
-        <div className='draw'>
+        <div className={`draw ${themeColor}`}>
             <div className="copy no-capture">Copyright 2025. Dingdongsun. All rights reserved.</div>
             <h1>Lucky Draw</h1>
-            <p>안내문구가 노출됩니다.</p>
+            <p>{noticeMessage}</p>
             <div className='draw-wrapper'>
                 {isLoading ? (
                     <div></div>
@@ -137,7 +139,7 @@ function DrawPage() {
                                         <button className='plus' onClick={() => setDrawCount((prev) => Math.min(100, prev + 1))}><Plus /></button>
                                     </div>
                                 </div>
-                                <button className='btn-mint go-draw' onClick={draw} disabled={!isAdmin} style={{width: 260}}>
+                                <button className={`go-draw ${themeColor}`} onClick={draw} disabled={!isAdmin} style={{width: 260}}>
                                     Draw!
                                 </button>
                             </>

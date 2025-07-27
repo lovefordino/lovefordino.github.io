@@ -6,10 +6,10 @@
     /* background: red; */
     overflow: hidden;
     flex-direction: column;
-    background: #85D8EA;
-    background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
+    /* // */
     padding: 2rem;
 }
+
 
 .draw-contents {
     display: flex;
@@ -117,11 +117,43 @@
     padding: 0 !important;
     border: 0 !important;
     width: 100%;
-    background: #85D8EA;
-    background: linear-gradient(125deg, rgba(133, 216, 234, 1) 0%, rgba(163, 153, 242, 1) 100%);
     color: #ffffff;
     margin: 0 auto;
 }
+
+
+.gradient1 {
+    background: #85D8EA;
+    background: -webkit-linear-gradient(125deg, #85d8ea 0%, #a399f2 100%);
+    background: linear-gradient(125deg, #85d8ea 0%, #a399f2 100%);
+}
+
+.gradient2 {
+    background: #ee9ca7;
+    background: -webkit-linear-gradient(125deg, #ffdde1, #ee9ca7);
+    background: linear-gradient(125deg, #ffdde1, #ee9ca7);
+}
+
+.gradient3 {
+    background: #FDC830;
+    background: -webkit-linear-gradient(125deg, #F37335, #FDC830);
+    background: linear-gradient(125deg, #F37335, #FDC830);
+}
+
+.gradient4 {
+    background: #b92b27;
+    background: -webkit-linear-gradient(125deg, #1565C0, #b92b27);
+    background: linear-gradient(125deg, #1565C0, #b92b27);
+
+}
+
+.gradient5 {
+    background: #bdc3c7;
+    background: -webkit-linear-gradient(125deg, #2c3e50, #bdc3c7);
+    background: linear-gradient(125deg, #2c3e50, #bdc3c7);
+
+}
+
 
 .draw .go-draw+.go-draw {
     margin-top: 1rem;
@@ -144,7 +176,13 @@
     margin-top: 1rem;
     max-height: 230px;
     overflow-y: auto;
+    -ms-overflow-style: none;
 }
+
+.draw-contents h2+ul::-webkit-scrollbar {
+    display: none;
+}
+
 
 .draw-contents ul {
     display: flex;
@@ -176,6 +214,7 @@
 
 .draw-contents .draw-result+ul {
     display: block;
+    max-height: max-content;
 }
 
 
@@ -309,6 +348,13 @@ button.btn-capture:disabled {
     color: #666;
     font-size: 1rem;
     margin-bottom: 1rem;
+    line-height: 1.4;
+    margin-top: 0;
+}
+
+.confetti-canvas {
+    width: 100vw !important;
+    height: 100vh !important
 }
 
 @keyframes pulse {
@@ -399,9 +445,6 @@ button.btn-capture:disabled {
 .rank-1,
 .rank-2 {
     color: #fff;
-    background: #85D8EA;
-    background: linear-gradient(125deg, rgb(133, 216, 234) 0%, rgba(163, 153, 242, 1) 100%);
-    box-shadow: 0 0 0.5rem rgba(146, 188, 237, 0.502);
 }
 
 @keyframes revealTextLTR {
@@ -421,8 +464,8 @@ button.btn-capture:disabled {
 }
 
 .force-reveal {
-  font-size: 1.1rem;
-  color: #ffffff;
-  animation: none !important;
-  opacity: 1 !important;
+    font-size: 1.1rem;
+    color: #ffffff;
+    animation: none !important;
+    opacity: 1 !important;
 }

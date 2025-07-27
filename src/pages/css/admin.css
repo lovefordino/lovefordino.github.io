@@ -63,6 +63,10 @@
     font-size: 1.4rem;
 }
 
+.admin-row + .admin-row {
+    margin-top:  2rem;
+}
+
 .admin-table {
     width: 80vw;
     margin: 0 auto;
@@ -220,4 +224,45 @@ tbody tr:hover {
         flex-wrap: wrap;
         justify-content: flex-start;
     }
+}
+
+
+.theme-label {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.theme-label input[type="radio"] {
+  display: none;
+}
+
+.theme-label label {
+    margin-right: 0;
+}
+
+/* 기본 span 스타일 */
+.theme-label label span {
+  display: inline-flex;
+  width: 80px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  border: 3px solid #ffffff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+/* ✅ 선택된 input의 형제 span에 스타일 적용 */
+.theme-label input[type="radio"]:checked + span {
+  opacity: 1;
+  border-color: #000000;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  opacity: 1;
 }
