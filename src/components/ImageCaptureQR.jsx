@@ -64,7 +64,7 @@ function ImageCaptureQR() {
       {!hasShown && (
         <div className='no-capture'>
           <button className="btn-capture" onClick={handleCaptureAndUpload} disabled={loading}>
-            {loading ? <LoaderCircle className="spinning" /> : <Camera color="#999" />}
+            {loading ? <LoaderCircle className="spinning" color="#000" /> : <Camera color="#000" />}
           </button>
         </div>
       )}

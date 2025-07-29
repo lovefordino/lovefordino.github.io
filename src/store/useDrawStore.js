@@ -1,15 +1,6 @@
-import {
-    create
-} from 'zustand';
-import {
-    doc,
-    getDoc,
-    setDoc,
-    onSnapshot
-} from 'firebase/firestore';
-import {
-    db
-} from '../firebase/firebaseConfig';
+import { create } from 'zustand';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 const PRIZE_DOC = doc(db, 'settings', 'prizes');
 
@@ -18,24 +9,12 @@ const useDrawStore = create((set, get) => ({
     displayMode: 'both',
     isLocked: false,
     isClosed: false,
-    noticeMessage: '', // ✅ 안내문구 상태 추가
-    themeColor: 'gradient1',
+    noticeMessage: '',
 
-    setClosed: (value) => set({
-        isClosed: value
-    }),
-    setLocked: (locked) => set({
-        isLocked: locked
-    }),
-    setDisplayMode: (mode) => set({
-        displayMode: mode
-    }),
-    setNoticeMessage: (msg) => set({
-        noticeMessage: msg
-    }), // ✅ 안내문구 setter 추가
-    setThemeColor: (colorName) => set({
-        themeColor: colorName
-    }),
+    setClosed: (value) => set({ isClosed: value }),
+    setLocked: (locked) => set({ isLocked: locked }),
+    setDisplayMode: (mode) => set({ displayMode: mode }),
+    setNoticeMessage: (msg) => set({ noticeMessage: msg }),
 
     loadFromFirebase: async () => {
         const snap = await getDoc(PRIZE_DOC);
@@ -43,7 +22,7 @@ const useDrawStore = create((set, get) => ({
             const data = snap.data();
             const prizesWithDefaults = (data.prizes || []).map((p) => ({
                 ...p,
-                requiresShipping: p.requiresShipping ?? false, // ✅ 오류 수정 (??)
+                requiresShipping: p.requiresShipping ?? false,
             }));
 
             set({
@@ -51,8 +30,7 @@ const useDrawStore = create((set, get) => ({
                 displayMode: data.displayMode || 'both',
                 isLocked: data.isLocked || false,
                 isClosed: data.isClosed || false,
-                noticeMessage: data.noticeMessage || '', // ✅ 안내문구 로드
-                themeColor: data.themeColor || 'gradient1',
+                noticeMessage: data.noticeMessage || '',
             });
         }
     },
@@ -63,7 +41,7 @@ const useDrawStore = create((set, get) => ({
                 const data = snap.data();
                 const prizesWithDefaults = (data.prizes || []).map((p) => ({
                     ...p,
-                    requiresShipping: p.requiresShipping ?? false, // ✅ 오류 수정 (??)
+                    requiresShipping: p.requiresShipping ?? false,
                 }));
 
                 set({
@@ -71,43 +49,29 @@ const useDrawStore = create((set, get) => ({
                     displayMode: data.displayMode || 'both',
                     isLocked: data.isLocked || false,
                     isClosed: data.isClosed || false,
-                    noticeMessage: data.noticeMessage || '', // ✅ 안내문구 실시간 반영
-                    themeColor: data.themeColor || 'gradient1',
+                    noticeMessage: data.noticeMessage || '',
                 });
             }
         });
     },
 
     saveToFirebase: async () => {
-        const {
-            prizes,
-            displayMode,
-            isLocked,
-            isClosed,
-            noticeMessage, // ✅ 안내문구 포함
-            themeColor
-        } = get();
+        const { prizes, displayMode, isLocked, isClosed, noticeMessage } = get();
 
         await setDoc(PRIZE_DOC, {
             prizes,
             displayMode,
             isLocked,
             isClosed,
-            noticeMessage, // ✅ Firestore에 저장
-            themeColor
+            noticeMessage,
         });
     },
 
     updatePrize: (index, updated) =>
         set((state) => {
             const newPrizes = [...state.prizes];
-            newPrizes[index] = {
-                ...newPrizes[index],
-                ...updated,
-            };
-            return {
-                prizes: newPrizes
-            };
+            newPrizes[index] = { ...newPrizes[index], ...updated };
+            return { prizes: newPrizes };
         }),
 
     addPrize: () =>
@@ -133,9 +97,7 @@ const useDrawStore = create((set, get) => ({
             const updated = [...state.prizes];
             updated.splice(index, 1);
             updated.forEach((p, i) => (p.rank = i + 1));
-            return {
-                prizes: updated
-            };
+            return { prizes: updated };
         }),
 }));
 

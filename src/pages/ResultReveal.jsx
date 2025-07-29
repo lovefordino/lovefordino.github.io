@@ -4,9 +4,8 @@ import useDrawStore from '../store/useDrawStore';
 import ShippingFormModal from './ShippingFormModal';
 import ImageCaptureQR from '../components/ImageCaptureQR';
 
-
 function ResultReveal({ results, onFinish }) {
-    const { displayMode,themeColor  } = useDrawStore();
+    const { displayMode } = useDrawStore();
     const [revealed, setRevealed] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [showConfetti, setShowConfetti] = useState(false);
@@ -15,7 +14,6 @@ function ResultReveal({ results, onFinish }) {
 
     const isHighRank = (item) => item.rank === 1 || item.rank === 2;
 
-    // 전체 요약용 그룹화
     const groupedResults = results.reduce((acc, item) => {
         const key = `${item.rank}-${item.name}`;
         if (!acc[key]) {
@@ -36,11 +34,7 @@ function ResultReveal({ results, onFinish }) {
 
     const handleReveal = (index) => {
         const item = results[index];
-
-        if (isHighRank(item)) {
-            setShowConfetti(true); // ❗️ 끄지 않음!
-        }
-
+        if (isHighRank(item)) setShowConfetti(true);
         setTimeout(() => {
             setRevealed((prev) => [...prev, index]);
         }, isHighRank(item) ? 500 : 0);
@@ -51,7 +45,6 @@ function ResultReveal({ results, onFinish }) {
     };
 
     useEffect(() => {
-        // 자동 reveal for 일반 등수
         if (currentIndex < results.length) {
             const item = results[currentIndex];
             if (!isHighRank(item)) {
@@ -61,8 +54,8 @@ function ResultReveal({ results, onFinish }) {
     }, [currentIndex]);
 
     const handleFinish = () => {
-        setShowConfetti(false); // ✅ 이 시점에만 컨페티 끔
-        onFinish();             // 외부 종료 콜백 호출
+        setShowConfetti(false);
+        onFinish();
     };
 
     return (
@@ -85,7 +78,7 @@ function ResultReveal({ results, onFinish }) {
                             return (
                                 <li
                                     key={i}
-                                    className={`fade-in rank-${r.rank} ${isHigh ? themeColor : ''}`}
+                                    className={`fade-in rank-${r.rank} ${isHigh ? 'hight-rank' : ''}`}
                                     data-rank={r.rank}
                                     data-label={renderLabel(r)}
                                     style={{ '--fade-index': i }}
@@ -103,7 +96,7 @@ function ResultReveal({ results, onFinish }) {
                             );
                         })}
                     </ul>
-                    <button className={`go-draw no-capture ${themeColor}`} onClick={handleShowSummary} style={{ width: 260 }}>
+                    <button className="go-draw no-capture" onClick={handleShowSummary} style={{ width: 260 }}>
                         전체 결과 보기
                     </button>
                     {results.some((r, i) => isHighRank(r) && revealed.includes(i)) && (
@@ -120,17 +113,12 @@ function ResultReveal({ results, onFinish }) {
                             </li>
                         ))}
                     </ul>
-
                     {needsShipping && (
-                        <button
-                            className={`go-draw no-capture ${themeColor}`}
-                            onClick={() => setShowShippingModal(true)}
-                        >
+                        <button className="go-draw no-capture" onClick={() => setShowShippingModal(true)}>
                             배송 정보 입력하기
                         </button>
                     )}
-
-                    <button className={`go-draw no-capture ${themeColor}`} onClick={handleFinish}>
+                    <button className="go-draw no-capture" onClick={handleFinish}>
                         확인 완료
                     </button>
                 </div>
