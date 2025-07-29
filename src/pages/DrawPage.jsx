@@ -112,6 +112,8 @@ function DrawPage() {
     return (
         <div className="draw">
             <div className="copy no-capture">Copyright 2025. Dingdongsun. All rights reserved.</div>
+            {/* <h1>Lucky Draw</h1> */}
+            {/* <p>{noticeMessage}</p> */}
             <div className='draw-wrapper'>
                 {isLoading ? (
                     <div></div>
