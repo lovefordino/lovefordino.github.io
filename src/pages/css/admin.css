@@ -5,6 +5,7 @@
     justify-content: center;
     min-height: 100vh;
     flex-direction: column;
+    padding: 2rem 0;
 }
 
 .admin-login {
