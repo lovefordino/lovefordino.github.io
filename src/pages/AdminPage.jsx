@@ -176,7 +176,7 @@ function AdminPage() {
                 <button className='lock-prize btn-white' onClick={() => setLocked(!isLocked)}>
                     {isLocked ? '잠금해제' : '설정잠금'}
                 </button>
-                <button className='add-prize btn-white' onClick={addPrize} disabled={isLocked || prizes.length >= 10}>
+                <button className='add-prize btn-white' onClick={addPrize} disabled={isLocked || prizes.length >= 50}>
                     상품추가
                 </button>
                 <div className="admin-summary">
